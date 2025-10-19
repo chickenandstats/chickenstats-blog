@@ -1,0 +1,12 @@
+---
+title: chickenstats blog
+subtitle: Information and updates on all things chickenstats
+listing:
+  sort: "date desc"
+  contents: "posts"
+  sort-ui: false
+  filter-ui: false
+  categories: true
+  feed: true
+page-layout: full
+---

@@ -10,12 +10,18 @@ format:
   commonmark: default
 
 website:
+  title: "chickenstats blog"
+  site-url: https://blog.chickenstats.com
+  google-analytics: "G-65XFF92N5R"
   twitter-card: true
   open-graph: true
   repo-actions: [issue]
   navbar:
     background: primary
     search: true
+    title: "chickenstats"
+    pinned: false
+    collapse-below: md
   sidebar:
     style: floating
 
