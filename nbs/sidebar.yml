@@ -1,7 +1,2 @@
 website:
-  sidebar:
-    contents:
-      - index.ipynb
-      - section: blog
-        contents: []
-        href: blog/index.qmd
+  sidebar: false

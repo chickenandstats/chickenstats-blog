@@ -3,26 +3,51 @@ project:
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: theme.scss
     toc: true
+    toc-location: left
     keep-md: true
+    page-layout: full
   commonmark: default
 
 website:
-  title: "chickenstats blog"
+  title: "chickenstats-blog"
+  favicon: images/site/favicon.png
   site-url: https://blog.chickenstats.com
   google-analytics: "G-65XFF92N5R"
   twitter-card: true
   open-graph: true
-  repo-actions: [issue]
   navbar:
     background: primary
     search: true
-    title: "chickenstats"
-    pinned: false
+    title: "chickenstats-blog"
+    pinned: true
+    sticky: true
     collapse-below: md
-  sidebar:
-    style: floating
+    left:
+      - text: "about"
+        href: about.ipynb
+      - text: "blog"
+        href: blog/index.qmd
+      - text: "projects"
+        href: projects.ipynb
+    right:
+      - icon: github
+        href: "https://github.com/chickenandstats/chickenstats-blog"
+      - icon: bluesky
+        href: "https://bsky.app/profile/chickenandstats.com"
+  cookie-consent:
+    type: express
+    style: interstitial
+  page-footer:
+    left: Copyright &copy; 2025 chicken and stats
+    right:
+      - icon: github
+        href: "https://github.com/chickenandstats/chickenstats-blog"
+      - icon: bluesky
+        href: "https://bsky.app/profile/chickenandstats.com"
 
 metadata-files: [nbdev.yml, sidebar.yml]
+
+execute:
+  freeze: auto
