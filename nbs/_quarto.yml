@@ -5,7 +5,7 @@ format:
   html:
     theme: theme.scss
     toc: true
-    toc-location: left
+    toc-location: left-body
     keep-md: true
     page-layout: full
   commonmark: default
