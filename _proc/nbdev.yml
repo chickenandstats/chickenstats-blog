@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "chickenstats-blog"
+  site-url: "https://chickenandstats.github.io/chickenstats-blog"
+  description: "Blog for chickenstats"
+  repo-branch: main
+  repo-url: "https://github.com/chickenandstats/chickenstats-blog"

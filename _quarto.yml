@@ -1,0 +1,65 @@
+project:
+  type: website
+  output-dir: docs
+
+lang: en
+
+website:
+  title: "chickenstats blog"
+  site-url: https://blog.chickenstats.com
+  open-graph: true
+  google-analytics: "G-65XFF92N5R"
+  search:
+    location: sidebar
+    type: overlay
+  navbar:
+    logo: /images/chicken_and_stats_logo.png
+    title: false
+    pinned: false
+    collapse-below: md
+  sidebar:
+    style: docked  
+    collapse-level: 1
+    background: light
+    tools:
+      - icon: bluesky
+        href: https://bsky.app/profile/chickenandstats.com
+        text: "Bluesky"
+      - icon: github
+        href: https://github.com/chickenandstats/chickenstats-blog
+        text: "GitHub"
+#      - icon: rss
+#        href: https://kapitan.net/blog/index.xml
+#        text: "RSS feed"
+    contents:
+      - section: "Projects"
+        href: projects/index.qmd
+        contents:
+          - text: "chickenstats"
+            href: projects/chickenstats.qmd
+          - text: "chickenstats-xg"
+            href: projects/chickenstats_xg.qmd
+          - text: "chickenstats-api"
+            href: projects/chickenstats_api.qmd
+          - text: "chickenandstats"
+            href: projects/chickenandstats.qmd
+      - text: "Blog"
+        href: blog/index.qmd
+      - text: "About"
+        href: about/index.qmd
+  page-footer:
+    left: Copyright &copy; 2025 chicken and stats
+
+format:
+  html:
+    # page-layout: full
+    date-format: "MMM YYYY"
+    theme:
+      light:
+        - flatly
+        - mozilla.scss
+    css: styles.css
+    toc: false
+
+execute: 
+  freeze: auto

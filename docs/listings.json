@@ -1,0 +1,15 @@
+[
+  {
+    "listing": "/blog/index.html",
+    "items": []
+  },
+  {
+    "listing": "/projects/index.html",
+    "items": [
+      "/projects/chickenandstats.html",
+      "/projects/chickenstats.html",
+      "/projects/chickenstats_api.html",
+      "/projects/chickenstats_xg.html"
+    ]
+  }
+]

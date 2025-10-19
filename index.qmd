@@ -1,0 +1,61 @@
+---
+sidebar: true
+toc: false
+format:
+  html:
+    page-layout: article
+  
+---
+```{=html}
+<!-- Bug in hero - only displays properly with empty div at the top -->
+<div class="jumbotron bgimg">
+  <div class="container">
+    <h1 class="display-4"></h1>
+    <p class="lead"></p>
+  </div>
+</div>
+<style type="text/css">
+.bgimg {
+  background-image: url('images/hero_transparent_thin.png');
+  Background-size: cover;
+}
+.lead {
+    font-family: "Zilla Slab";
+    text-align: center;
+}
+.hero-quote {
+  font-family: "Zilla Slab";
+  font-color: white;
+  color: white;
+}
+
+.fw-bold {
+  /* font-family: "Zilla Slab Highlight"; */
+  font-style: bold !important;
+  color: white !important;
+}
+</style>
+<div class="p-5 mb-4 bg-light rounded-3 bgimg">
+  <div class="hero-quote">
+    <h1 class="display-5 fw-bold">chicken and stats</h1>
+  </div>
+</div>
+```
+
+<br>
+
+::: {.grid}
+::: {.g-col-1}
+:::
+
+::: {.g-col-10}
+#### **Open source tools for sports analytics**
+
+Scrape and analyze data for NHL hockey with the `chickenstats` python package. Go to the
+`chickenstats` [documentation](https://chickenstats.com/latest/) for more information
+
+#### **Musings on Tennessee sports**
+
+Subscribe to the [chicken and stats blog](https://chickenandstats.com) for in-depth analysis of the
+Nashville Predators, Tennessee Titans, and Tennessee Volunteers. Follow along with code examples at the
+[blog section](/blog) of this site
