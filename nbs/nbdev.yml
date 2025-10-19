@@ -3,7 +3,7 @@ project:
 
 website:
   title: "chickenstats-blog"
-  site-url: "https://chickenandstats.github.io/chickenstats-blog"
+  site-url: "https://blog.chickenstats.com/"
   description: "Blog for chickenstats"
   repo-branch: main
   repo-url: "https://github.com/chickenandstats/chickenstats-blog"
