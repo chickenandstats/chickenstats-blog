@@ -181,3 +181,5 @@ cython_debug/
 .cursorindexingignore
 /.quarto/
 **/*.quarto_ipynb
+
+/_proc
