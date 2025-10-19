@@ -25,6 +25,8 @@ website:
     sticky: true
     collapse-below: md
     left:
+      - text: "docs"
+        href: https://chickenstats.com/latest/
       - text: "about"
         href: about.ipynb
       - text: "blog"
