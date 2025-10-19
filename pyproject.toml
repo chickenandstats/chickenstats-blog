@@ -1,0 +1,8 @@
+[project]
+name = "chickenstats-blog"
+authors = [{name = "chickenandstats", email = "chicken@chickenandstats.com"}]
+version = "0.1.0"
+description = "Blog for chickenstats
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
