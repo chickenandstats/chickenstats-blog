@@ -12,3 +12,31 @@ dependencies = [
     "pre-commit>=4.3.0",
     "quarto>=0.1.0",
 ]
+
+[tool.ruff]
+include = [
+    "pyproject.toml",
+    "nbs/**/*.py",
+    "nbs/**/*.ipynb",
+    ]
+extend-include = ["*.ipynb"]
+exclude = [
+    "*__init__.py",
+    ]
+target-version = "py313"
+fix = true
+unsafe-fixes = true
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "D", "UP", "B"]
+fixable = ["ALL"]
+ignore = ["F401", "D100", "B017", "B007", "E501"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = true
+skip-magic-trailing-comma = true
+

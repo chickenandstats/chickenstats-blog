@@ -1,9 +1,9 @@
 repos:
-- repo: https://github.com/astral-sh/uv-pre-commit
-  # uv version.
-  rev: 0.9.4
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.9.1
   hooks:
-    - id: uv-lock
+    - id: ruff
+    - id: ruff-format
 - repo: https://github.com/fastai/nbdev
   rev: 2.2.10
   hooks:
