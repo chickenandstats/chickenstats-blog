@@ -3,7 +3,9 @@ project:
 
 format:
   html:
-    theme: theme.scss
+    theme:
+      light: light_theme.scss
+      dark: dark_theme.scss
     toc: true
     toc-location: right
     keep-md: true
@@ -36,8 +38,6 @@ website:
     right:
       - icon: github
         href: "https://github.com/chickenandstats/chickenstats-blog"
-      - icon: bluesky
-        href: "https://bsky.app/profile/chickenandstats.com"
   cookie-consent:
     type: express
     style: interstitial

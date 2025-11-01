@@ -183,5 +183,6 @@ cython_debug/
 **/*.quarto_ipynb
 
 /_proc
+/_docs
 
 **.DS_Store
