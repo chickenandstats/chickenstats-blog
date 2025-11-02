@@ -4,12 +4,14 @@ authors = [{name = "chickenandstats", email = "chicken@chickenandstats.com"}]
 version = "0.1.0"
 description = "Blog for chickenstats"
 readme = "README.md"
-requires-python=">=3.10"
+requires-python=">=3.12"
 dependencies = [
     "chickenstats>=1.7.9.23",
     "jupyterlab-quarto>=0.3.5",
+    "monsterui>=1.0.32",
     "nbdev>=2.4.6",
     "pre-commit>=4.3.0",
+    "python-fasthtml>=0.12.33",
     "quarto>=0.1.0",
 ]
 
@@ -32,6 +34,9 @@ line-length = 120
 select = ["E", "F", "D", "UP", "B"]
 fixable = ["ALL"]
 ignore = ["F401", "D100", "B017", "B007", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"nbs/index.qmd.py" = ["D205"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
