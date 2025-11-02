@@ -49,7 +49,7 @@ d(
     "hero-banner",
 )
 
-d(img("site/hero_transparent.png"), "hero-banner")
+d(img("site/hero_transparent_alt.png"), "hero-banner")
 
 d(
     """
