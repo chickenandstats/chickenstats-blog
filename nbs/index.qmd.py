@@ -38,6 +38,16 @@ def d(*args, **kwargs):
     print(qmd.div(*args, **kwargs))
 
 
+def blog_card(im):
+    """Quarto blog card."""
+    return qmd.div(img(f"cards/{im}.png"), ["carousel-list"])
+
+
+blog_cards = ["predators_card", "titans_card", "vols_card", "other_card"]
+
+blog_cards_d = qmd.div("\n".join([blog_card(x) for x in blog_cards]), ["carousel-box"])
+
+
 ###
 # Output section
 ###
@@ -63,3 +73,5 @@ data-locale="en" async></script>
 """,
     "hero-banner",
 )
+
+d(blog_cards_d, "carousel-box")

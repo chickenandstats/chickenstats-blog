@@ -11,20 +11,6 @@
   overflow-x: hidden;
 }
 
-@media(min-width: 900px) {
-  .content-block {
-    margin-left: 50px;
-    margin-right: 50px;
-  }
-}
-
-@media(min-width: 1200px) {
-  .content-block {
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
 .hero-banner {
   padding-top: 0px;
   padding-bottom: 0px;
@@ -87,4 +73,70 @@
 
 .quarto-figure {
   margin: 0;
+}
+
+.mid-content {
+  width: 100%;
+  padding: 0;
+  padding-top: 80px !important;
+  padding-bottom: 80px;
+  overflow-x: hidden;
+}
+
+.blog_card {
+  font-size: 16px;
+  height: 210px;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog_card img {
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+
+}
+
+@media(min-width: 900px) {
+  .content-block {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+}
+
+@media(min-width: 1200px) {
+  .content-block {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+}
+
+.carousel-box {
+  width: 80vw;
+  margin: auto;
+  height: auto;
+  padding: 20px;
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+
+.carousel-list {
+  list-style-type: none;
+  padding: 20px;
+  scroll-snap-align: center;
+  flex: 0 0 100%;
+  height: auto;
+}
+
+.carousel-list img {
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: center center;
+  background-position: center center;
 }
