@@ -1,0 +1,13 @@
+---
+title: "chicken"
+about:
+  template: jolla
+  image: images/site/avatar/avatar_transparent.png
+  links:
+      - icon: github
+        href: "https://github.com/chickenandstats/chickenstats-blog"
+      - icon: bluesky
+        href: "https://bsky.app/profile/chickenandstats.com"
+---
+
+I'm chicken. I write a newsletter and maintain the [`chickenstats`](https://chickenstats.com/latest) python package

@@ -59,12 +59,12 @@ d(
     "hero-banner",
 )
 
-d(img("site/hero_transparent_alt.png"), "hero-banner")
+d(img("site/hero/hero_transparent_alt.png"), "hero-banner")
 
 d(
     """
 
-<div style="min-height: 58px;max-width: 440px;margin: 0 auto;width: 100%">
+<div style="min-height: 58px;max-width: 440px;margin: 0 auto;width: 80%">
 <script src="https://cdn.jsdelivr.net/ghost/signup-form@~0.2/umd/signup-form.min.js" 
 data-button-color="#4051b5" data-button-text-color="#FFFFF" data-site="https://chickenandstats.com/" 
 data-locale="en" async></script>

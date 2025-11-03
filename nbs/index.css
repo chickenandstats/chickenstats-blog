@@ -115,10 +115,9 @@
 }
 
 .carousel-box {
-  width: 80vw;
+  width: 100%;
   margin: auto;
   height: auto;
-  padding: 20px;
   display: flex;
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
@@ -139,4 +138,17 @@
   object-fit: cover;
   object-position: center center;
   background-position: center center;
+}
+
+
+@media(min-width: 700px) {
+  .carousel-box {
+    width: 90%;
+  }
+}
+
+@media(min-width: 900px) {
+  .carousel-box {
+    width: 80%;
+  }
 }

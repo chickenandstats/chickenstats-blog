@@ -30,7 +30,7 @@ website:
       - text: "docs"
         href: https://chickenstats.com/latest/
       - text: "about"
-        href: about.ipynb
+        href: about.qmd
       - text: "blog"
         href: blog/index.qmd
       - text: "projects"
