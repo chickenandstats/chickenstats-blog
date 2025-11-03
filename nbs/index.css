@@ -136,4 +136,7 @@
   width: auto;
   height: auto;
   border-radius: 12px;
+  object-fit: cover;
+  object-position: center center;
+  background-position: center center;
 }
