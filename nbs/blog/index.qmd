@@ -2,8 +2,10 @@
 title: chickenstats blog
 subtitle: Information and updates on all things chickenstats
 listing:
+  type: grid
   sort: "date desc"
-  contents: "posts"
+  contents:
+    - posts/**/index.ipynb
   sort-ui: false
   filter-ui: false
   categories: true

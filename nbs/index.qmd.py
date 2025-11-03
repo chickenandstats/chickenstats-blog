@@ -4,8 +4,7 @@ page-layout: custom
 section-divs: false
 css: index.css
 toc: false
-image: https://raw.githubusercontent.com/chickenandstats/chickenstats-blog/refs/heads/main/nbs/images/site/hero_transparent.png.
-
+image: images/site/hero/hero_transparent.png.
 ---
 """
 
