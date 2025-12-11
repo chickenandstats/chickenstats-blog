@@ -4,8 +4,12 @@ project:
 format:
   html:
     theme:
-      light: light_theme.scss
-      dark: dark_theme.scss
+      light:
+        - flatly
+        - ./stylesheets/flatly.scss
+      dark:
+        - darkly
+        - ./stylesheets/darkly.scss
     toc: true
     toc-location: right
     keep-md: true
