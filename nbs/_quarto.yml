@@ -18,7 +18,7 @@ format:
 
 website:
   title: "chickenstats-blog"
-  favicon: images/site/favicon.png
+  favicon: images/site/logos/favicon.png
   site-url: https://blog.chickenstats.com
   google-analytics: "G-65XFF92N5R"
   twitter-card: true
