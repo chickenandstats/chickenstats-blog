@@ -32,7 +32,7 @@ website:
     collapse-below: md
     left:
       - text: "docs"
-        href: https://chickenstats.com/latest/
+        href: https://chickenstats.com/
       - text: "about"
         href: about.qmd
       - text: "blog"

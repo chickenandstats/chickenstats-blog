@@ -9,7 +9,7 @@ $theme: "darkly" !default;
 
 /*-- scss:defaults --*/
 
-$white:    #fff !default;
+$white:    #e2e4e9d1 !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #ebebeb !default;
 $gray-300: #dee2e6 !default;
@@ -19,7 +19,7 @@ $gray-600: #888 !default;
 $gray-700: #444 !default;
 $gray-800: #303030 !default;
 $gray-900: #222 !default;
-$black:    #000 !default;
+$black:    #0b0c0f !default;
 
 $blue:    #375a7f !default;
 $indigo:  #6610f2 !default;
@@ -31,10 +31,11 @@ $yellow:  #f39c12 !default;
 $green:   #00bc8c !default;
 $teal:    #20c997 !default;
 $cyan:    #3498db !default;
+$blue:    #4287ff !default;
 
-$primary:       #4051b5 !default;
+$primary:       #000000de !default;
 $secondary:     $gray-700 !default;
-$success:       $green !default;
+$success:       $blue !default;
 $info:          $cyan !default;
 $warning:       $yellow !default;
 $danger:        $red !default;
@@ -45,7 +46,7 @@ $min-contrast-ratio:   1.9 !default;
 
 // Body
 
-$body-bg:                   $gray-900 !default;
+$body-bg:                   $black !default;
 $body-color:                $white !default;
 
 // Links
