@@ -525,7 +525,7 @@ wheels = [
 [[package]]
 name = "chickenstats"
 version = "1.7.9.27"
-source = { git = "https://github.com/chickenandstats/chickenstats?branch=v1.7.9.27#0019eba179f58865a1b15016fb72a1baf0e194c0" }
+source = { git = "https://github.com/chickenandstats/chickenstats?branch=v1.7.9.27#ee06c7830be46dafaa727b54c1170c88d802c38e" }
 dependencies = [
     { name = "beautifulsoup4" },
     { name = "chickenstats-api" },
