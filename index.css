@@ -1,0 +1,153 @@
+
+
+
+#title-block-header {
+  display: none;
+}
+
+.content-block {
+  margin-left: 30px;
+  margin-right: 30px;
+  overflow-x: hidden;
+}
+
+.hero-banner {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-banner h1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 38px;
+  max-width: 90%;
+}
+
+.hero-banner h2 {
+  border: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.hero-banner h3 {
+  max-width: 90%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.hero-banner img {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+.btn-action-primary {
+  color: #4051b5;
+  background: #4051b5;
+  font-weight: 700;
+  line-height: 20px; /* identical to box height */
+}
+
+.btn-action-primary:hover, .btn-action-primary:active, .btn-action-primary:focus {
+  background: #4051b5;
+}
+
+.btn-action {
+  min-width: 165px;
+  border-radius: 8px;
+  padding: 20px 48px;
+  border: none;
+}
+
+/* Below are needed to make .ipynb equivalent to .qmd */
+
+.figure {
+  display: inline;
+}
+
+.quarto-figure {
+  margin: 0;
+}
+
+.mid-content {
+  width: 100%;
+  padding: 0;
+  padding-top: 80px !important;
+  padding-bottom: 80px;
+  overflow-x: hidden;
+}
+
+.blog_card {
+  font-size: 16px;
+  height: 210px;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog_card img {
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+
+}
+
+@media(min-width: 900px) {
+  .content-block {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+}
+
+@media(min-width: 1200px) {
+  .content-block {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+}
+
+.carousel-box {
+  width: 100%;
+  margin: auto;
+  height: auto;
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+
+.carousel-list {
+  list-style-type: none;
+  padding: 20px;
+  scroll-snap-align: center;
+  flex: 0 0 100%;
+  height: auto;
+}
+
+.carousel-list img {
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: center center;
+  background-position: center center;
+}
+
+
+@media(min-width: 700px) {
+  .carousel-box {
+    width: 90%;
+  }
+}
+
+@media(min-width: 900px) {
+  .carousel-box {
+    width: 80%;
+  }
+}
