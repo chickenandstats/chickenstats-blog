@@ -46,7 +46,7 @@ website:
     type: express
     style: interstitial
   page-footer:
-    left: Copyright &copy; 2025 chicken and stats
+    left: Copyright &copy; 2025-26 chicken and stats
     right:
       - icon: github
         href: "https://github.com/chickenandstats/chickenstats-blog"
