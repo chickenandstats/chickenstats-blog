@@ -833,10 +833,25 @@ def main():
     nhl_stats = prep_nhl_stats(team_stats)
 
     if args.all_dates:
-        conds = pl.col("game_state") == "OFF"
+        results_directory = Path.cwd() / "results"
+        predictions_file = results_directory / "predictions.csv"
+
+        if predictions_file.exists():
+            saved_predictions = pl.read_csv(predictions_file)
+            conds = (
+                pl.col("game_state") == "OFF",
+                ~pl.col("game_id").is_in(
+                    saved_predictions["game_id"].unique().to_list()
+                ),
+            )
+            game_index = 0
+
+        else:
+            conds = pl.col("game_state") == "OFF"
+            game_index = 75
 
         final_games = schedule.filter(conds).sort("game_id", descending=False)
-        final_game_ids = final_games["game_id"].unique().to_list()[75:]
+        final_game_ids = final_games["game_id"].unique().to_list()[game_index:]
 
         dates = (
             schedule.filter(pl.col("game_id").is_in(final_game_ids))
@@ -859,7 +874,9 @@ def main():
             saved_predictions = pl.read_csv(predictions_file)
             conds = (
                 pl.col("game_date").str.to_datetime(format="%Y-%m-%d") <= latest_date,
-                ~pl.col("game_id").is_in(saved_predictions["game_id"].unique()),
+                ~pl.col("game_id").is_in(
+                    saved_predictions["game_id"].unique().to_list()
+                ),
             )
 
         else:
