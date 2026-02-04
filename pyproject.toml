@@ -1,62 +1,33 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name="chickenstats-blog"
-authors = [{name = "chickenandstats", email = "chicken@chickenandstats.com"}]
-version = "0.1.0"
+name = "chickenstats-blog"
+dynamic = ["version"]
 description = "Blog for chickenstats"
 readme = "README.md"
-requires-python=">=3.10"
-dependencies = [
-    "bokeh>=3.8.0",
-    "census>=0.8.24",
-    "chickenstats>=1.7.9.23",
-    "ipywidgets>=8.1.8",
-    "jupyter>=1.1.1",
-    "jupyterlab-quarto>=0.3.5",
-    "monsterui>=1.0.32",
-    "nbdev>=2.4.6",
-    "nflreadpy>=0.1.5",
-    "osmnx>=2.0.7",
-    "plotly>=6.3.1",
-    "polars-st>=0.4.3",
-    "pre-commit>=4.3.0",
-    "python-dotenv>=1.2.1",
-    "python-fasthtml>=0.12.33",
-    "pytz>=2025.2",
-    "quarto>=0.1.0",
-    "seaborn>=0.13.2",
-    "us>=3.2.0",
-]
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{name = "chickenandstats", email = "chicken@chickenandstats.com"}]
+keywords = ['nbdev', 'jupyter', 'notebook', 'python']
+classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
+dependencies = []
 
-[tool.ruff]
-include = [
-    "pyproject.toml",
-    "nbs/**/*.py",
-    "nbs/**/*.ipynb",
-    ]
-extend-include = ["*.ipynb"]
-exclude = [
-    "*__init__.py",
-    ]
-target-version = "py313"
-fix = true
-unsafe-fixes = true
-line-length = 120
+[project.urls]
+Repository = "https://github.com/chickenandstats/chickenstats-blog"
+Documentation = "https://blog.chickenstats.com/"
 
-[tool.ruff.lint]
-select = ["E", "F", "D", "UP", "B"]
-fixable = ["ALL"]
-ignore = ["F401", "D100", "B017", "B007", "E501"]
+[project.entry-points.nbdev]
+chickenstats_blog = "chickenstats_blog._modidx:d"
 
-[tool.ruff.lint.per-file-ignores]
-"nbs/index.qmd.py" = ["D205"]
+[tool.setuptools.dynamic]
+version = {attr = "chickenstats_blog.__version__"}
 
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+[tool.setuptools.packages.find]
+include = ["chickenstats_blog"]
 
-[tool.ruff.format]
-docstring-code-format = true
-skip-magic-trailing-comma = true
-
-[tool.uv.sources]
-chickenstats = { git = "https://github.com/chickenandstats/chickenstats", branch = "v1.7.9.27" }
-
+[tool.nbdev]
+readme_nb = 'readme.ipynb'
+jupyter_hooks = true
+custom_sidebar = true
