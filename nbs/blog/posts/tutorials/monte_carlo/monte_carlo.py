@@ -1,4 +1,6 @@
 import argparse
+from typing import Literal
+
 import polars as pl
 import numpy as np
 from scipy.stats import poisson
@@ -46,83 +48,18 @@ def aggregate_strength_states(team_stats: pl.DataFrame) -> pl.DataFrame:
     return team_stats
 
 
-def prep_nhl_stats(team_stats: pl.DataFrame) -> pl.DataFrame:
-    """Function to calculate the goals scored and allowed above the expected goals model, adjusted for score and venue.
-
-    Parameters:
-        team_stats (pl.DataFrame):
-            Polars dataframe of team statistics aggregated from the `chickenstats` library
-
-
-    """
-    if "strength_state2" not in team_stats.columns:
-        team_stats = aggregate_strength_states(team_stats)
-
-    group_columns = ["season", "session", "is_home", "strength_state2"]
-    non_agg_columns = ["team", "strength_state", "game_id", "game_date", "opp_team"]
-
-    agg_stats = tuple(
-        pl.col(x).sum()
-        for x in team_stats.columns
-        if x not in group_columns
-        and x not in non_agg_columns
-        and "p60" not in x
-        and "percent" not in x
-    )
-
-    agg_stats = agg_stats + (pl.col("game_id").n_unique(),)
-
-    nhl_stats = team_stats.group_by(group_columns).agg(agg_stats)
-
-    nhl_stats = nhl_stats.with_columns(
-        g_score_ax=pl.col("gf_adj") - pl.col("xgf_adj"),
-        g_save_ax=pl.col("xga_adj") - pl.col("ga_adj"),
-    )
-
-    nhl_stats = nhl_stats.with_columns(
-        toi_gp=pl.col("toi") / pl.col("game_id"),
-        gf_p60=pl.col("gf") / pl.col("toi") * 60,
-        ga_p60=pl.col("ga") / pl.col("toi") * 60,
-        gf_adj_p60=pl.col("gf_adj") / pl.col("toi") * 60,
-        ga_adj_p60=pl.col("ga_adj") / pl.col("toi") * 60,
-        xgf_p60=pl.col("xgf") / pl.col("toi") * 60,
-        xga_p60=pl.col("xga") / pl.col("toi") * 60,
-        xgf_adj_p60=pl.col("xgf_adj") / pl.col("toi") * 60,
-        xga_adj_p60=pl.col("xga_adj") / pl.col("toi") * 60,
-        g_score_ax_p60=pl.col("g_score_ax") / pl.col("toi") * 60,
-        g_save_ax_p60=pl.col("g_save_ax") / pl.col("toi") * 60,
-    )
-
-    return nhl_stats
-
-
-def prep_team_stats(
-    team_stats: pl.DataFrame, nhl_stats: pl.DataFrame, latest_date: str
+def augment_team_stats(
+    team_stats: pl.DataFrame, level: Literal["team", "nhl"]
 ) -> pl.DataFrame:
-    """Prepare team stats dataframe for later analysis. Nested within the prep today's function.
+    """Aggregate to season stats for desired level, team or NHL."""
 
-    Parameters:
-        team_stats (pl.DataFrame):
-            Polars dataframe of team statistics aggregated from the `chickenstats` library
-        nhl_stats (pl.DataFrame):
-            Polars dataframe of aggregated NHL-level statistics from the team stats dataframe at an earlier stage
+    if level == "team":
+        group_columns = ["season", "session", "team", "is_home", "strength_state2"]
+        non_agg_columns = ["game_id", "game_date", "opp_team", "strength_state"]
 
-    """
-    if "strength_state2" not in team_stats.columns:
-        team_stats = aggregate_strength_states(team_stats)
-
-    latest_date_dt = dt.date(
-        year=int(latest_date[:4]),
-        month=int(latest_date[5:7]),
-        day=int(latest_date[8:10]),
-    )
-    team_stats = team_stats.filter(
-        pl.col("game_date").str.to_date(format="%Y-%m-%d") < latest_date_dt
-    )
-
-    # Aggregate statistics with the new columns
-    group_columns = ["season", "session", "team", "is_home", "strength_state2"]
-    non_agg_columns = ["game_id", "game_date", "opp_team", "strength_state"]
+    elif level == "nhl":
+        group_columns = ["season", "session", "is_home", "strength_state2"]
+        non_agg_columns = ["team", "strength_state", "game_id", "game_date", "opp_team"]
 
     agg_stats = tuple(
         pl.col(x).sum()
@@ -137,8 +74,6 @@ def prep_team_stats(
 
     team_stats = team_stats.group_by(group_columns).agg(agg_stats)
 
-    # Adding columns for goals scored and allowed above the expected goals model, adjusted for score and venue
-
     team_stats = team_stats.with_columns(
         g_score_ax=pl.col("gf_adj") - pl.col("xgf_adj"),
         g_save_ax=pl.col("xga_adj") - pl.col("ga_adj"),
@@ -157,6 +92,55 @@ def prep_team_stats(
         g_score_ax_p60=pl.col("g_score_ax") / pl.col("toi") * 60,
         g_save_ax_p60=pl.col("g_save_ax") / pl.col("toi") * 60,
     )
+
+    return team_stats
+
+
+def prep_nhl_stats(team_stats: pl.DataFrame) -> pl.DataFrame:
+    """Function to calculate the goals scored and allowed above the expected goals model, adjusted for score and venue.
+
+    Parameters:
+        team_stats (pl.DataFrame):
+            Polars dataframe of team statistics aggregated from the `chickenstats` library
+
+
+    """
+    if "strength_state2" not in team_stats.columns:
+        team_stats = aggregate_strength_states(team_stats)
+
+    nhl_stats = augment_team_stats(team_stats=team_stats, level="nhl")
+
+    return nhl_stats
+
+
+def prep_team_stats(
+    team_stats: pl.DataFrame, nhl_stats: pl.DataFrame, latest_date: str
+) -> pl.DataFrame:
+    """Prepare team stats dataframe for later analysis. Nested within the prep today's function.
+
+    Parameters:
+        team_stats (pl.DataFrame):
+            Polars dataframe of team statistics aggregated from the `chickenstats` library
+        nhl_stats (pl.DataFrame):
+            Polars dataframe of aggregated NHL-level statistics from the team stats dataframe at an earlier stage
+        latest_date (str):
+            Latest date to use in aggregating team stats - don't want later results to bias
+            predictions of earlier games
+
+    """
+    if "strength_state2" not in team_stats.columns:
+        team_stats = aggregate_strength_states(team_stats)
+
+    latest_date_dt = dt.date(
+        year=int(latest_date[:4]),
+        month=int(latest_date[5:7]),
+        day=int(latest_date[8:10]),
+    )
+    team_stats = team_stats.filter(
+        pl.col("game_date").str.to_date(format="%Y-%m-%d") < latest_date_dt
+    )
+
+    team_stats = augment_team_stats(team_stats=team_stats, level="team")
 
     # Adding mean NHL columns for the columns we'll use to predict the games
     predict_columns = [
@@ -591,7 +575,7 @@ def predict_game(
 
 
 def predict_games(
-    predict_game,
+    predict_game_function,
     todays_games: pl.DataFrame,
     n_workers: int = 6,
     total_simulations: int = 10_000,
@@ -605,7 +589,7 @@ def predict_games(
     with ThreadPoolExecutor(max_workers=n_workers) as executor:
         futures = [
             executor.submit(
-                predict_game,
+                predict_game_function,
                 game,
                 total_simulations,
                 disable_progress_bar,
@@ -875,13 +859,16 @@ def main():
             conds = (
                 pl.col("game_date").str.to_datetime(format="%Y-%m-%d") <= latest_date,
                 ~pl.col("game_id").is_in(
-                    saved_predictions["game_id"].unique().to_list()
+                    saved_predictions["game_id"].unique().to_list(),
                 ),
+                pl.col("game_id") > saved_predictions["game_id"].max(),
+                pl.col("game_state") == "OFF",
             )
 
         else:
             conds = (
-                pl.col("game_date").str.to_datetime(format="%Y-%m-%d") <= latest_date
+                pl.col("game_date").str.to_datetime(format="%Y-%m-%d") <= latest_date,
+                pl.col("game_state") == "OFF",
             )
 
         final_games = schedule.filter(conds).sort("game_id", descending=False)
