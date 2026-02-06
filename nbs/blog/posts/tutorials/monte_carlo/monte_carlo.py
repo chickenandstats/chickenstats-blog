@@ -696,7 +696,7 @@ def assess_predictions(
 
     predicted_winners = predicted_winners.with_columns(
         actual_winner=pl.col("game_id").replace_strict(
-            winners_dict, return_dtype=pl.String
+            winners_dict, default=None, return_dtype=pl.String
         )
     )
 
