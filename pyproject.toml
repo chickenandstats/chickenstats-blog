@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chickenstats-blog"
+authors = [{name = "chickenandstats", email = "chicken@chickenandstats.com"}]
 dynamic = ["version"]
 description = "Blog for chickenstats"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
-authors = [{name = "chickenandstats", email = "chicken@chickenandstats.com"}]
 keywords = ['nbdev', 'jupyter', 'notebook', 'python']
 classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
 dependencies = [
@@ -48,7 +48,7 @@ version = {attr = "chickenstats_blog.__version__"}
 include = ["chickenstats_blog"]
 
 [tool.nbdev]
-readme_nb = 'readme.ipynb'
+readme_nb = 'nbs/readme.ipynb'
 jupyter_hooks = true
 custom_sidebar = true
 
