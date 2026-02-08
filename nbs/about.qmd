@@ -10,4 +10,4 @@ about:
         href: "https://bsky.app/profile/chickenandstats.com"
 ---
 
-I'm chicken. I write a newsletter and maintain the [`chickenstats`](https://chickenstats.com/latest) python package
+I'm chicken. I write a newsletter and maintain the [`chickenstats`](https://chickenstats.com/) python package
