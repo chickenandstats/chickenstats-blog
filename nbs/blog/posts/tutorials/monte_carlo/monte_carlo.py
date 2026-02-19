@@ -48,11 +48,8 @@ def aggregate_strength_states(team_stats: pl.DataFrame) -> pl.DataFrame:
     return team_stats
 
 
-def augment_team_stats(
-    team_stats: pl.DataFrame, level: Literal["team", "nhl"]
-) -> pl.DataFrame:
+def augment_team_stats(team_stats: pl.DataFrame, level: Literal["team", "nhl"]) -> pl.DataFrame:
     """Aggregate to season stats for desired level, team or NHL."""
-
     if level == "team":
         group_columns = ["season", "session", "team", "is_home", "strength_state2"]
         non_agg_columns = ["game_id", "game_date", "opp_team", "strength_state"]
@@ -64,10 +61,7 @@ def augment_team_stats(
     agg_stats = tuple(
         pl.col(x).sum()
         for x in team_stats.columns
-        if x not in group_columns
-        and x not in non_agg_columns
-        and "p60" not in x
-        and "percent" not in x
+        if x not in group_columns and x not in non_agg_columns and "p60" not in x and "percent" not in x
     )
 
     agg_stats = agg_stats + (pl.col("game_id").n_unique(),)
@@ -75,8 +69,7 @@ def augment_team_stats(
     team_stats = team_stats.group_by(group_columns).agg(agg_stats)
 
     team_stats = team_stats.with_columns(
-        g_score_ax=pl.col("gf_adj") - pl.col("xgf_adj"),
-        g_save_ax=pl.col("xga_adj") - pl.col("ga_adj"),
+        g_score_ax=pl.col("gf_adj") - pl.col("xgf_adj"), g_save_ax=pl.col("xga_adj") - pl.col("ga_adj")
     )
 
     team_stats = team_stats.with_columns(
@@ -113,9 +106,7 @@ def prep_nhl_stats(team_stats: pl.DataFrame) -> pl.DataFrame:
     return nhl_stats
 
 
-def prep_team_stats(
-    team_stats: pl.DataFrame, nhl_stats: pl.DataFrame, latest_date: str
-) -> pl.DataFrame:
+def prep_team_stats(team_stats: pl.DataFrame, nhl_stats: pl.DataFrame, latest_date: str) -> pl.DataFrame:
     """Prepare team stats dataframe for later analysis. Nested within the prep today's function.
 
     Parameters:
@@ -131,14 +122,8 @@ def prep_team_stats(
     if "strength_state2" not in team_stats.columns:
         team_stats = aggregate_strength_states(team_stats)
 
-    latest_date_dt = dt.date(
-        year=int(latest_date[:4]),
-        month=int(latest_date[5:7]),
-        day=int(latest_date[8:10]),
-    )
-    team_stats = team_stats.filter(
-        pl.col("game_date").str.to_date(format="%Y-%m-%d") < latest_date_dt
-    )
+    latest_date_dt = dt.date(year=int(latest_date[:4]), month=int(latest_date[5:7]), day=int(latest_date[8:10]))
+    team_stats = team_stats.filter(pl.col("game_date").str.to_date(format="%Y-%m-%d") < latest_date_dt)
 
     team_stats = augment_team_stats(team_stats=team_stats, level="team")
 
@@ -159,11 +144,7 @@ def prep_team_stats(
 
     for column in predict_columns:
         nhl_mean_map = dict(
-            zip(
-                (nhl_stats["strength_state2"] + nhl_stats["is_home"].cast(pl.String)),
-                nhl_stats[column],
-                strict=False,
-            )
+            zip((nhl_stats["strength_state2"] + nhl_stats["is_home"].cast(pl.String)), nhl_stats[column], strict=False)
         )
 
         team_stats = team_stats.with_columns(
@@ -186,29 +167,15 @@ def prep_team_stats(
 
 
 def prep_todays_games(
-    schedule: pl.DataFrame,
-    team_stats: pl.DataFrame,
-    nhl_stats: pl.DataFrame,
-    latest_date: str,
+    schedule: pl.DataFrame, team_stats: pl.DataFrame, nhl_stats: pl.DataFrame, latest_date: str
 ) -> pl.DataFrame:
     """Function to prep today's games."""
-    team_stats = prep_team_stats(
-        team_stats=team_stats, nhl_stats=nhl_stats, latest_date=latest_date
-    )
+    team_stats = prep_team_stats(team_stats=team_stats, nhl_stats=nhl_stats, latest_date=latest_date)
 
-    todays_games = schedule.filter(
-        pl.col("game_date") == latest_date
-    )  # Filter the schedule for today's games
+    todays_games = schedule.filter(pl.col("game_date") == latest_date)  # Filter the schedule for today's games
 
-    venues = [
-        "home",
-        "away",
-    ]  # We need to account for venue effects on scorekeeping and performance
-    strength_states = [
-        "5v5",
-        "powerplay",
-        "shorthanded",
-    ]  # Segmenting by strength state
+    venues = ["home", "away"]  # We need to account for venue effects on scorekeeping and performance
+    strength_states = ["5v5", "powerplay", "shorthanded"]  # Segmenting by strength state
 
     team_value_dicts = {}  # Dictionary to store values to map to team stats columns
 
@@ -222,15 +189,11 @@ def prep_todays_games(
                 "toi_comparison",
             ]
 
-            if (
-                strength_state == "powerplay"
-            ):  # We don't care about defensive comparisons for powerplay
+            if strength_state == "powerplay":  # We don't care about defensive comparisons for powerplay
                 remove_list = ["def_strength", "goalie_strength"]
                 values = [x for x in values if x not in remove_list]
 
-            elif (
-                strength_state == "shorthanded"
-            ):  # We don't care about defensive comparisons for shorthanded
+            elif strength_state == "shorthanded":  # We don't care about defensive comparisons for shorthanded
                 remove_list = ["off_strength", "scoring_strength"]
                 values = [x for x in values if x not in remove_list]
 
@@ -243,31 +206,19 @@ def prep_todays_games(
                 else:
                     venue_dummy = 0
 
-                dummy_replacements = {
-                    1: "home",
-                    0: "away",
-                }  # Dictionary to replace dummy variables later
+                dummy_replacements = {1: "home", 0: "away"}  # Dictionary to replace dummy variables later
 
-                filter_conditions = (
-                    pl.col("strength_state2") == strength_state,
-                    pl.col("is_home") == venue_dummy,
-                )
-                filter_df = team_stats.filter(
-                    filter_conditions
-                )  # Filtering the dataframe
+                filter_conditions = (pl.col("strength_state2") == strength_state, pl.col("is_home") == venue_dummy)
+                filter_df = team_stats.filter(filter_conditions)  # Filtering the dataframe
 
                 # Getting a mapping column value for the nested dictionary, e.g., NAShome
 
-                team_column = filter_df[
-                    "team"
-                ]  # Getting the team names portion of the mapping key
+                team_column = filter_df["team"]  # Getting the team names portion of the mapping key
                 venue_column = filter_df["is_home"].replace_strict(
                     dummy_replacements, return_dtype=pl.String
                 )  # Getting venue portion, but need to replace the dummy values
 
-                mapping_column = (
-                    team_column + venue_column
-                )  # Mapping column for nested dictionary, e.g., NAShome
+                mapping_column = team_column + venue_column  # Mapping column for nested dictionary, e.g., NAShome
                 value_column = filter_df[value]  # Value column for nested dictionary
                 nested_dictionary = dict(
                     zip(mapping_column, value_column, strict=False)
@@ -309,9 +260,7 @@ def prep_todays_games(
                     pl.col("strength_state2") == strength_state,
                     pl.col("is_home") == venue_dummy,
                 )  # Splitting out for readability
-                field_value = nhl_stats.filter(filter_conditions)[column][
-                    0
-                ]  # We need the value
+                field_value = nhl_stats.filter(filter_conditions)[column][0]  # We need the value
 
                 nhl_value_dicts.update(
                     {f"{venue}_{strength_state}_{column}": field_value}
@@ -322,49 +271,32 @@ def prep_todays_games(
     for (
         key,
         value,
-    ) in (
-        team_value_dicts.items()
-    ):  # Iterating through the dictionary created earlier to add them to the dataframe
+    ) in team_value_dicts.items():  # Iterating through the dictionary created earlier to add them to the dataframe
         venue = f"{key[:4]}"  # This pulls in either "home" or "away" from the key, which is something like home_5v5_off_strength
         venue_team = f"{venue}_team"
 
         # Adds a new column with the values based on the team and strength state, with a new column name like home_5v5_off_strength
-        new_column = (
-            (pl.col(venue_team) + venue)
-            .replace_strict(value, return_dtype=pl.Float64)
-            .alias(key)
-        )
+        new_column = (pl.col(venue_team) + venue).replace_strict(value, return_dtype=pl.Float64).alias(key)
 
         add_columns.append(new_column)  # Appending to the new columns list
 
-    for (
-        key,
-        value,
-    ) in nhl_value_dicts.items():  # Adding the NHL mean columns to the dataframe
+    for key, value in nhl_value_dicts.items():  # Adding the NHL mean columns to the dataframe
         add_columns.append(
             pl.lit(value).alias(f"mean_{key}")
         )  # Adding the NHL mean column to the list to be added to the dataframe
 
-    todays_games = todays_games.with_columns(
-        add_columns
-    )  # Adding the columns to the dataframe
+    todays_games = todays_games.with_columns(add_columns)  # Adding the columns to the dataframe
 
     # Predicting home and away time on ice, goals, and expected goals based on historical performance and NHL means
 
     todays_games = todays_games.with_columns(
-        predicted_home_5v5_toi=pl.col(
-            "home_5v5_toi_comparison"
-        )  # predicted home 5v5 TOI
+        predicted_home_5v5_toi=pl.col("home_5v5_toi_comparison")  # predicted home 5v5 TOI
         * pl.col("away_5v5_toi_comparison")
         * pl.col("mean_home_5v5_toi_gp"),
-        predicted_home_powerplay_toi=pl.col(
-            "home_powerplay_toi_comparison"
-        )  # predicted home powerplay TOI
+        predicted_home_powerplay_toi=pl.col("home_powerplay_toi_comparison")  # predicted home powerplay TOI
         * pl.col("away_shorthanded_toi_comparison")
         * pl.col("mean_home_powerplay_toi_gp"),
-        predicted_home_shorthanded_toi=pl.col(
-            "home_shorthanded_toi_comparison"
-        )  # predicted home shorthanded TOI
+        predicted_home_shorthanded_toi=pl.col("home_shorthanded_toi_comparison")  # predicted home shorthanded TOI
         * pl.col("away_powerplay_toi_comparison")
         * pl.col("mean_home_shorthanded_toi_gp"),
         predicted_home_5v5_xgf_p60=pl.col("home_5v5_off_strength")
@@ -461,21 +393,13 @@ def simulate_game(game: dict) -> dict:
 
     home_5v5_xgf_p60 = poisson.ppf(random_float(), game["predicted_home_5v5_xgf_p60"])
     home_5v5_gf_p60 = poisson.ppf(random_float(), game["predicted_home_5v5_gf_p60"])
-    home_pp_xgf_p60 = poisson.ppf(
-        random_float(), game["predicted_home_powerplay_xgf_p60"]
-    )
-    home_pp_gf_p60 = poisson.ppf(
-        random_float(), game["predicted_home_powerplay_gf_p60"]
-    )
+    home_pp_xgf_p60 = poisson.ppf(random_float(), game["predicted_home_powerplay_xgf_p60"])
+    home_pp_gf_p60 = poisson.ppf(random_float(), game["predicted_home_powerplay_gf_p60"])
 
     away_5v5_xgf_p60 = poisson.ppf(random_float(), game["predicted_away_5v5_xgf_p60"])
     away_5v5_gf_p60 = poisson.ppf(random_float(), game["predicted_away_5v5_gf_p60"])
-    away_pp_xgf_p60 = poisson.ppf(
-        random_float(), game["predicted_away_powerplay_xgf_p60"]
-    )
-    away_pp_gf_p60 = poisson.ppf(
-        random_float(), game["predicted_away_powerplay_gf_p60"]
-    )
+    away_pp_xgf_p60 = poisson.ppf(random_float(), game["predicted_away_powerplay_xgf_p60"])
+    away_pp_gf_p60 = poisson.ppf(random_float(), game["predicted_away_powerplay_gf_p60"])
 
     home_5v5_goals = home_5v5_xgf_p60 * (home_5v5_toi / 60)
     home_pp_goals = home_pp_xgf_p60 * (home_pp_toi / 60)
@@ -555,9 +479,7 @@ def predict_game(
             if sim_number == total_simulations - 1:
                 pbar_message = f"Finished simulating {game['game_id']}"
 
-            progress.update(
-                simulation_task, description=pbar_message, advance=1, refresh=True
-            )
+            progress.update(simulation_task, description=pbar_message, advance=1, refresh=True)
 
     predictions = pl.DataFrame(predictions)
 
@@ -588,14 +510,7 @@ def predict_games(
 
     with ThreadPoolExecutor(max_workers=n_workers) as executor:
         futures = [
-            executor.submit(
-                predict_game_function,
-                game,
-                total_simulations,
-                disable_progress_bar,
-                save,
-                overwrite,
-            )
+            executor.submit(predict_game_function, game, total_simulations, disable_progress_bar, save, overwrite)
             for game in todays_games.to_dicts()
         ]
 
@@ -610,9 +525,7 @@ def process_winners(predictions: pl.DataFrame) -> pl.DataFrame:
     group_list = ["game_id", "home_team", "away_team"]
 
     agg_stats_sum = ["home_win", "away_win", "draw"]
-    agg_stats_mean = [
-        x for x in predictions.columns if x not in group_list and x not in agg_stats_sum
-    ]
+    agg_stats_mean = [x for x in predictions.columns if x not in group_list and x not in agg_stats_sum]
 
     agg_stats = [pl.col(x).sum().alias(f"predicted_{x}") for x in agg_stats_sum] + [
         pl.col(x).mean().alias(f"{x}_mean") for x in agg_stats_mean
@@ -623,17 +536,13 @@ def process_winners(predictions: pl.DataFrame) -> pl.DataFrame:
     sum_stats = [f"predicted_{x}" for x in agg_stats_sum]
     add_stats = []
     for stat in agg_stats_sum:
-        add_stat = (pl.col(f"predicted_{stat}") / pl.sum_horizontal(sum_stats)).alias(
-            f"predicted_{stat}_percent"
-        )
+        add_stat = (pl.col(f"predicted_{stat}") / pl.sum_horizontal(sum_stats)).alias(f"predicted_{stat}_percent")
         add_stats.append(add_stat)
 
     predicted_winners = predicted_winners.with_columns(add_stats)
 
     predicted_winners = predicted_winners.with_columns(
-        predicted_winner=pl.when(
-            pl.col("predicted_home_win_percent") > pl.col("predicted_away_win_percent")
-        )
+        predicted_winner=pl.when(pl.col("predicted_home_win_percent") > pl.col("predicted_away_win_percent"))
         .then(pl.col("home_team"))
         .otherwise(pl.col("away_team"))
     )
@@ -672,38 +581,23 @@ def process_winners(predictions: pl.DataFrame) -> pl.DataFrame:
     return predicted_winners
 
 
-def assess_predictions(
-    predicted_winners: pl.DataFrame, schedule: pl.DataFrame
-) -> pl.DataFrame:
+def assess_predictions(predicted_winners: pl.DataFrame, schedule: pl.DataFrame) -> pl.DataFrame:
     """Takes the scheduled and checkes to see if the predicted results are corrected."""
-    schedule = schedule.filter(
-        pl.col("game_state") == "OFF"
-    )  # Getting only the finished games
+    schedule = schedule.filter(pl.col("game_state") == "OFF")  # Getting only the finished games
     game_ids = schedule["game_id"].to_list()  # Taking the game IDs as a list
 
-    home_win = pl.col("home_score") > pl.col(
-        "away_score"
-    )  # Condition to check if the home team won
+    home_win = pl.col("home_score") > pl.col("away_score")  # Condition to check if the home team won
     winners = schedule.select(
-        pl.when(home_win)
-        .then(pl.col("home_team"))
-        .otherwise(pl.col("away_team"))
-        .alias("actual_winner")
+        pl.when(home_win).then(pl.col("home_team")).otherwise(pl.col("away_team")).alias("actual_winner")
     )["actual_winner"].to_list()  # Getting the winners as a list
-    winners_dict = dict(
-        zip(game_ids, winners, strict=False)
-    )  # Combining game IDs and winning teams as a dictionary
+    winners_dict = dict(zip(game_ids, winners, strict=False))  # Combining game IDs and winning teams as a dictionary
 
     predicted_winners = predicted_winners.with_columns(
-        actual_winner=pl.col("game_id").replace_strict(
-            winners_dict, default=None, return_dtype=pl.String
-        )
+        actual_winner=pl.col("game_id").replace_strict(winners_dict, default=None, return_dtype=pl.String)
     )
 
     predicted_winners = predicted_winners.with_columns(
-        prediction_correct=pl.when(
-            pl.col("actual_winner") == pl.col("predicted_winner")
-        )
+        prediction_correct=pl.when(pl.col("actual_winner") == pl.col("predicted_winner"))
         .then(pl.lit(1))
         .otherwise(pl.lit(0))
     )
@@ -747,19 +641,10 @@ def assess_predictions(
 def main():
     """Function to run the Monte Carlo simulation."""
     parser = argparse.ArgumentParser()
+    parser.add_argument("-a", "--all-dates", help="Upload play-by-play data", action="store_true")
+    parser.add_argument("--latest-date", help="Upload play-by-play data", action="store", type=str)
     parser.add_argument(
-        "-a", "--all-dates", help="Upload play-by-play data", action="store_true"
-    )
-    parser.add_argument(
-        "--latest-date", help="Upload play-by-play data", action="store", type=str
-    )
-    parser.add_argument(
-        "-s",
-        "--simulations",
-        help="Number of simulations per game to run",
-        action="store",
-        default="100_000",
-        type=int,
+        "-s", "--simulations", help="Number of simulations per game to run", action="store", default="100_000", type=int
     )
     parser.add_argument(
         "-n",
@@ -795,21 +680,14 @@ def main():
         scraped_team_stats = scraper.team_stats
 
         team_stats = pl.concat(
-            [
-                team_stats.with_columns(pl.col("bsf_adj_percent").cast(pl.Float64)),
-                scraped_team_stats,
-            ],
-            strict=False,
+            [team_stats.with_columns(pl.col("bsf_adj_percent").cast(pl.Float64)), scraped_team_stats], strict=False
         )  # Quirk, don't ask
         team_stats.write_csv(stats_file)
 
     home_map = dict(zip(schedule["game_id"], schedule["home_team"], strict=False))
 
     team_stats = team_stats.with_columns(
-        is_home=pl.when(
-            pl.col("game_id").replace_strict(home_map, return_dtype=pl.String)
-            == pl.col("team")
-        )
+        is_home=pl.when(pl.col("game_id").replace_strict(home_map, return_dtype=pl.String) == pl.col("team"))
         .then(pl.lit(1))
         .otherwise(pl.lit(0))
     )
@@ -824,9 +702,7 @@ def main():
             saved_predictions = pl.read_csv(predictions_file)
             conds = (
                 pl.col("game_state") == "OFF",
-                ~pl.col("game_id").is_in(
-                    saved_predictions["game_id"].unique().to_list()
-                ),
+                ~pl.col("game_id").is_in(saved_predictions["game_id"].unique().to_list()),
             )
             game_index = 0
 
@@ -846,9 +722,7 @@ def main():
 
     elif args.latest_date:
         latest_date = dt.date(
-            year=int(args.latest_date[:4]),
-            month=int(args.latest_date[5:7]),
-            day=int(args.latest_date[8:10]),
+            year=int(args.latest_date[:4]), month=int(args.latest_date[5:7]), day=int(args.latest_date[8:10])
         )
 
         results_directory = Path.cwd() / "results"
@@ -858,9 +732,7 @@ def main():
             saved_predictions = pl.read_csv(predictions_file)
             conds = (
                 pl.col("game_date").str.to_datetime(format="%Y-%m-%d") <= latest_date,
-                ~pl.col("game_id").is_in(
-                    saved_predictions["game_id"].unique().to_list(),
-                ),
+                ~pl.col("game_id").is_in(saved_predictions["game_id"].unique().to_list()),
                 pl.col("game_id") > saved_predictions["game_id"].max(),
                 pl.col("game_state") == "OFF",
             )
@@ -889,23 +761,15 @@ def main():
 
         for idx, date in enumerate(dates):
             todays_games = prep_todays_games(
-                schedule=schedule,
-                team_stats=team_stats,
-                nhl_stats=nhl_stats,
-                latest_date=date,
+                schedule=schedule, team_stats=team_stats, nhl_stats=nhl_stats, latest_date=date
             )
 
             today_game_ids = todays_games["game_id"].to_list()
             pbar_message = f"Simulating {date}: ({len(today_game_ids)} games)..."
-            progress.update(
-                progress_task, description=pbar_message, advance=False, refresh=True
-            )
+            progress.update(progress_task, description=pbar_message, advance=False, refresh=True)
 
             predictions = predict_games(
-                predict_game,
-                todays_games,
-                total_simulations=args.simulations,
-                n_workers=args.number_of_cores,
+                predict_game, todays_games, total_simulations=args.simulations, n_workers=args.number_of_cores
             )
 
             predictions_list.append(predictions)
@@ -913,9 +777,7 @@ def main():
             if idx == len(dates) - 1:
                 pbar_message = "Finished simulating games"
 
-            progress.update(
-                progress_task, description=pbar_message, advance=1, refresh=True
-            )
+            progress.update(progress_task, description=pbar_message, advance=1, refresh=True)
 
     predictions = pl.concat(predictions_list)
     predicted_winners = process_winners(predictions)
@@ -932,9 +794,7 @@ def main():
     assessed_predictions_file = results_directory / "assessed_predictions.csv"
 
     if assessed_predictions_file.exists():
-        assessed_predictions = pl.concat(
-            [pl.read_csv(assessed_predictions_file), assessed_predictions]
-        )
+        assessed_predictions = pl.concat([pl.read_csv(assessed_predictions_file), assessed_predictions])
 
     assessed_predictions.write_csv("./results/predicted_winners.csv")
 
