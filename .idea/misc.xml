@@ -4,4 +4,10 @@
     <option name="sdkName" value="Python 3.13 (chickenstats-blog)" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 (chickenstats-blog)" project-jdk-type="Python SDK" />
+  <component name="RuffConfiguration">
+    <option name="enabled" value="true" />
+  </component>
+  <component name="TyConfiguration">
+    <option name="enabled" value="true" />
+  </component>
 </project>
