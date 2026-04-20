@@ -34,6 +34,7 @@ website:
   navbar:
     background: light
     search: true
+    logo: images/site/logos/favicon.png
     title: "chickenstats-blog"
     pinned: true
     sticky: true
