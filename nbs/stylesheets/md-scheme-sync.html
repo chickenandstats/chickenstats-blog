@@ -1,0 +1,24 @@
+<script>
+  (function () {
+    function syncMdScheme() {
+      var isDark =
+        document.documentElement.getAttribute("data-bs-theme") === "dark" ||
+        document.body.classList.contains("quarto-dark");
+      document.documentElement.setAttribute(
+        "data-md-color-scheme",
+        isDark ? "slate" : "default"
+      );
+      document.documentElement.setAttribute("data-md-color-primary", "indigo");
+    }
+    syncMdScheme();
+    var obs = new MutationObserver(syncMdScheme);
+    obs.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-bs-theme", "class"],
+    });
+    obs.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  })();
+</script>

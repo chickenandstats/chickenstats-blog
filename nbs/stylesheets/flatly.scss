@@ -22,7 +22,7 @@ $gray-900: #212529 !default;
 $black:    #000 !default;
 
 $blue:    #2c3e50 !default;
-$indigo:  #6610f2 !default;
+$indigo:  #4051b5 !default;
 $purple:  #6f42c1 !default;
 $pink:    #e83e8c !default;
 $red:     #e74c3c !default;
@@ -33,7 +33,7 @@ $teal:    #20c997 !default;
 $cyan:    #3498db !default;
 $blue:    #4287ff !default;
 
-$primary:       #ffffffb3 !default;
+$primary:       #4051b5 !default;
 $secondary:     $gray-600 !default;
 $success:       $blue !default;
 $info:          $cyan !default;
@@ -42,11 +42,16 @@ $danger:        $red !default;
 $light:         $gray-200 !default;
 $dark:          $gray-700 !default;
 
+$body-color:           rgba(0, 0, 0, 0.87) !default;
+$text-muted:           rgba(0, 0, 0, 0.55) !default;
+$mark-bg:              rgba(255, 255, 0, 0.5) !default;
+$code-color:           #36464e !default;
+
 $min-contrast-ratio:   2.05 !default;
 
 // Links
 
-$link-color:                $success !default;
+$link-color:                #4051b5 !default;
 
 // Fonts
 

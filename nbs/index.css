@@ -47,14 +47,15 @@
 
 
 .btn-action-primary {
-  color: #4051b5;
-  background: #4051b5;
+  color: var(--md-primary-bg-color, #fff);
+  background: var(--md-primary-fg-color, #4051b5);
   font-weight: 700;
-  line-height: 20px; /* identical to box height */
+  line-height: 20px;
 }
 
 .btn-action-primary:hover, .btn-action-primary:active, .btn-action-primary:focus {
-  background: #4051b5;
+  background: var(--md-primary-fg-color, #4051b5);
+  opacity: 0.85;
 }
 
 .btn-action {

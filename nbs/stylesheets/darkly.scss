@@ -22,7 +22,7 @@ $gray-900: #222 !default;
 $black:    #0b0c0f !default;
 
 $blue:    #375a7f !default;
-$indigo:  #6610f2 !default;
+$indigo:  #4051b5 !default;
 $purple:  #6f42c1 !default;
 $pink:    #e83e8c !default;
 $red:     #e74c3c !default;
@@ -33,7 +33,7 @@ $teal:    #20c997 !default;
 $cyan:    #3498db !default;
 $blue:    #4287ff !default;
 
-$primary:       #000000de !default;
+$primary:       #4051b5 !default;
 $secondary:     $gray-700 !default;
 $success:       $blue !default;
 $info:          $cyan !default;
@@ -51,7 +51,8 @@ $body-color:                $white !default;
 
 // Links
 
-$link-color:                $success !default;
+$headings-color:            #fff !default;
+$link-color:                #5488e8 !default;
 
 // Fonts
 
@@ -60,7 +61,8 @@ $font-family-sans-serif:      Lato, -apple-system, BlinkMacSystemFont, "Segoe UI
 $h1-font-size:                3rem !default;
 $h2-font-size:                2.5rem !default;
 $h3-font-size:                2rem !default;
-$text-muted:                  $gray-600 !default;
+$text-muted:                  hsla(225, 15%, 90%, 0.56) !default;
+$mark-bg:                     rgba(66, 135, 255, 0.3) !default;
 
 // Tables
 
@@ -113,7 +115,7 @@ $nav-underline-link-active-color:   $white !default;
 // Navbar
 
 $navbar-padding-y:                  1rem !default;
-$navbar-dark-color:                rgba($white, .6) !default;
+$navbar-dark-color:                $white !default;
 $navbar-dark-hover-color:          $white !default;
 $navbar-light-color:                rgba($gray-900, .7) !default;
 $navbar-light-hover-color:          $gray-900 !default;

@@ -84,4 +84,4 @@ docstring-code-format = true
 skip-magic-trailing-comma = true
 
 [tool.uv.sources]
-chickenstats = { git = "https://github.com/chickenandstats/chickenstats", branch = "v1.7.9.27" }
+chickenstats = { git = "https://github.com/chickenandstats/chickenstats", branch = "v1.7.9.29" }

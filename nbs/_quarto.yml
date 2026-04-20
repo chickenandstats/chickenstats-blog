@@ -10,6 +10,14 @@ format:
       dark:
         - darkly
         - ./stylesheets/darkly.scss
+    highlight-style:
+      light: ./stylesheets/material-light.theme
+      dark: ./stylesheets/material-dark.theme
+    css:
+      - ./stylesheets/zensical.min.css
+      - ./stylesheets/palette.min.css
+      - ./stylesheets/chickenstats.css
+    include-after-body: stylesheets/md-scheme-sync.html
     toc: true
     toc-location: right
     keep-md: true
@@ -24,7 +32,7 @@ website:
   twitter-card: true
   open-graph: true
   navbar:
-    background: primary
+    background: light
     search: true
     title: "chickenstats-blog"
     pinned: true

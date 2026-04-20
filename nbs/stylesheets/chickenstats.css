@@ -1,0 +1,430 @@
+/* -------------------------------------------------------------------------
+   chickenstats blog styles — supplements Quarto/Bootswatch with Material
+   Design components. Uses --md-* CSS variables (defined by zensical.min.css
+   + palette.min.css, synced to Quarto's theme toggle via md-scheme-sync.html).
+   ------------------------------------------------------------------------- */
+
+/* Reset font sizes that zensical.min.css overrides with Material's smaller scale */
+html {
+  font-size: 100% !important;
+}
+
+body {
+  font-size: 1rem !important;
+}
+
+p, li, td, th, .nav-link, .navbar-brand {
+  font-size: inherit !important;
+}
+
+h1 { font-size: 2.5rem !important; }
+h2 { font-size: 2rem !important; }
+h3 { font-size: 1.75rem !important; }
+h4 { font-size: 1.5rem !important; }
+h5 { font-size: 1.25rem !important; }
+h6 { font-size: 1rem !important; }
+
+/* Clean adaptive navbar — matches chickenstats-api style */
+.navbar {
+  background-color: var(--md-default-bg-color) !important;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest) !important;
+  backdrop-filter: blur(8px);
+}
+
+.navbar-brand,
+.navbar .nav-link {
+  color: var(--md-default-fg-color--light) !important;
+  font-weight: 500;
+  transition: color 125ms;
+}
+
+.navbar-brand:hover,
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--md-default-fg-color) !important;
+}
+
+.navbar .navbar-toggler {
+  border-color: var(--md-default-fg-color--lightest) !important;
+  color: var(--md-default-fg-color--light) !important;
+}
+
+/* Hero section */
+.cs-hero-bg {
+  background-image: url("/images/hero_transparent_alt.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.cs-hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--md-default-bg-color--light);
+  backdrop-filter: blur(2px);
+}
+
+.cs-hero {
+  position: relative;
+  text-align: center;
+  padding: 6rem 1rem 5rem;
+  max-width: 56rem;
+  margin-inline: auto;
+}
+
+.cs-hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--md-default-fg-color);
+  margin-bottom: 1.5rem;
+  line-height: 1.15;
+}
+
+.cs-hero p {
+  font-size: 1.2rem;
+  color: var(--md-default-fg-color--light);
+  max-width: 36rem;
+  margin-inline: auto;
+  margin-bottom: 2.5rem;
+}
+
+.cs-hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cs-hero-img {
+  max-width: 28rem;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.5rem;
+}
+
+/* Newsletter hero strip */
+.cs-newsletter-hero {
+  background-image: url("/images/hero.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: 2rem 1rem;
+}
+
+.cs-newsletter-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--md-default-bg-color--light);
+  backdrop-filter: blur(2px);
+}
+
+.cs-newsletter-inner {
+  position: relative;
+  max-width: 36rem;
+  margin-inline: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cs-newsletter-tagline {
+  font-size: 1rem;
+  color: var(--md-default-fg-color--light);
+  margin: 0;
+}
+
+/* Section wrappers */
+.cs-section {
+  padding: 5rem 1rem;
+}
+
+.cs-section--shaded {
+  background-color: var(--md-default-bg-color--lightest);
+  padding-bottom: 2rem;
+}
+
+.cs-section-inner {
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+.cs-section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--md-default-fg-color);
+  margin-bottom: 3rem;
+}
+
+/* Feature card grid */
+.cs-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .cs-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .cs-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Generic card */
+.cs-card {
+  background-color: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.cs-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+  margin-bottom: 0.5rem;
+}
+
+.cs-card p {
+  font-size: 0.875rem;
+  color: var(--md-default-fg-color--light);
+  margin: 0;
+}
+
+/* Tier badge */
+.cs-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+}
+
+.cs-badge--free {
+  background-color: var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color--light);
+}
+
+.cs-badge--pro {
+  background-color: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+}
+
+.cs-badge--super {
+  background-color: var(--md-accent-fg-color);
+  color: var(--md-accent-bg-color);
+}
+
+/* Alert / notification strip */
+.cs-alert {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.cs-alert--error {
+  background-color: hsla(0, 70%, 95%, 1);
+  color: hsla(0, 60%, 40%, 1);
+  border: 1px solid hsla(0, 60%, 85%, 1);
+}
+
+.cs-alert--success {
+  background-color: hsla(140, 60%, 95%, 1);
+  color: hsla(140, 50%, 30%, 1);
+  border: 1px solid hsla(140, 50%, 80%, 1);
+}
+
+/* Code block colors — maps Quarto/Pygments to Material --md-code-* variables
+   Light: bg #f5f5f5, text #36464e  |  Dark: bg hsl(hue,20%,10%), text hsl(hue,20%,80%) */
+div.sourceCode,
+pre.sourceCode {
+  background-color: var(--md-code-bg-color) !important;
+  border-radius: 0.5rem;
+}
+
+pre.sourceCode code {
+  color: var(--md-code-fg-color) !important;
+  background-color: transparent !important;
+}
+
+code:not(.sourceCode) {
+  color: var(--md-code-fg-color);
+  background-color: var(--md-code-bg-color--light);
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+}
+
+/* cs-code-block */
+.cs-code-block {
+  background-color: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-size: 0.875rem;
+  overflow-x: auto;
+  white-space: pre;
+  font-family: monospace;
+}
+
+/* Blog post list */
+.cs-blog-container {
+  max-width: 48rem;
+  margin-inline: auto;
+  padding: 4rem 1rem;
+}
+
+.cs-post-list {
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.cs-post-item {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.cs-post-item:hover h2 {
+  color: var(--md-primary-fg-color);
+}
+
+/* Post card grid */
+.cs-post-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  padding: 0.5rem 0 2rem;
+}
+
+@media (min-width: 640px) {
+  .cs-post-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .cs-post-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.cs-post-card {
+  background-color: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: box-shadow 150ms, border-color 150ms;
+}
+
+.cs-post-card:hover {
+  border-color: var(--md-primary-fg-color);
+  box-shadow: 0 4px 16px hsla(0,0%,0%,0.08);
+}
+
+.cs-post-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cs-post-card__img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.cs-post-card__img-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--md-default-fg-color--lightest);
+}
+
+.cs-post-card__body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.cs-post-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cs-post-card__tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-primary-fg-color);
+}
+
+.cs-post-card__date {
+  font-size: 0.75rem;
+  color: var(--md-default-fg-color--lighter);
+}
+
+.cs-post-card__meta .cs-post-card__tag + .cs-post-card__date::before {
+  content: "·";
+  margin-right: 0.5rem;
+}
+
+.cs-post-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.cs-post-card:hover .cs-post-card__title {
+  color: var(--md-primary-fg-color);
+}
+
+.cs-post-card__desc {
+  font-size: 0.875rem;
+  color: var(--md-default-fg-color--light);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.cs-post-empty {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.9rem;
+}
+
+.cs-post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--md-default-fg-color--lighter);
+  margin-bottom: 0.5rem;
+}
+
+/* Link row utility */
+.cs-link-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.cs-link-row a {
+  font-size: 0.875rem;
+  color: var(--md-primary-fg-color);
+  text-decoration: none;
+}
+
+.cs-link-row a:hover {
+  text-decoration: underline;
+}
