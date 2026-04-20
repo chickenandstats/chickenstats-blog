@@ -13,3 +13,5 @@ listing:
     type: partial
 page-layout: full
 ---
+
+[RSS Feed](/blog/index.xml)
