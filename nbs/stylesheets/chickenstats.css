@@ -51,7 +51,7 @@ h6 { font-size: 1rem !important; }
 
 /* Hero section */
 .cs-hero-bg {
-  background-image: url("/images/hero_transparent_alt.png");
+  background-image: url("/images/site/hero/hero_transparent_alt.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -107,7 +107,7 @@ h6 { font-size: 1rem !important; }
 
 /* Newsletter hero strip */
 .cs-newsletter-hero {
-  background-image: url("/images/hero.png");
+  background-image: url("/images/site/hero/hero_transparent_alt.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
