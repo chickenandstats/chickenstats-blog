@@ -679,9 +679,16 @@ def main():
         # pbp = scraper.play_by_play
         scraped_team_stats = scraper.team_stats
 
-        team_stats = pl.concat(
-            [team_stats.with_columns(pl.col("bsf_adj_percent").cast(pl.Float64)), scraped_team_stats], strict=False
-        )  # Quirk, don't ask
+        if stats_file.exists():
+            team_stats = pl.read_csv(source=stats_file, infer_schema_length=2000)
+
+            team_stats = pl.concat(
+                [team_stats.with_columns(pl.col("bsf_adj_percent").cast(pl.Float64)), scraped_team_stats], strict=False
+            )  # Quirk, don't ask
+
+        else:
+            team_stats = scraped_team_stats.clone()
+
         team_stats.write_csv(stats_file)
 
     home_map = dict(zip(schedule["game_id"], schedule["home_team"], strict=False))
