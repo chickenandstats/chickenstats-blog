@@ -88,3 +88,8 @@ package = false
 
 [tool.uv.sources]
 chickenstats = { git = "https://github.com/chickenandstats/chickenstats", branch = "v1.7.9.29" }
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.11",
+]
