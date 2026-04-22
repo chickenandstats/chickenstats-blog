@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>chickenstats-blog</title>
+<link>https://blog.chickenstats.com/blog/</link>
+<atom:link href="https://blog.chickenstats.com/blog/index.xml" rel="self" type="application/rss+xml"/>
+<description>Blog for chickenstats</description>
+<generator>quarto-1.9.37</generator>
+<lastBuildDate>Wed, 18 Feb 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Rink maps</title>
+  <dc:creator>chicken </dc:creator>
+  <link>https://blog.chickenstats.com/blog/posts/tutorials/rink_maps/</link>
+  <description><![CDATA[ Scrape play-by-play data and plot shot maps with chickenstats and hockey-rink ]]></description>
+  <category>tutorials</category>
+  <guid>https://blog.chickenstats.com/blog/posts/tutorials/rink_maps/</guid>
+  <pubDate>Wed, 18 Feb 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.chickenstats.com/blog/posts/tutorials/rink_maps/charts/nsh_forwards_rink_maps.png" medium="image" type="image/png" height="90" width="144"/>
+</item>
+<item>
+  <title>Simulating today’s hockey games</title>
+  <dc:creator>chicken </dc:creator>
+  <link>https://blog.chickenstats.com/blog/posts/tutorials/monte_carlo/</link>
+  <description><![CDATA[ Run monte carlo simulations using the expected goals model to predict the winners of today’s games ]]></description>
+  <category>tutorials</category>
+  <guid>https://blog.chickenstats.com/blog/posts/tutorials/monte_carlo/</guid>
+  <pubDate>Tue, 27 Jan 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.chickenstats.com/blog/posts/tutorials/monte_carlo/charts/2026-01-24_NSH.png" medium="image" type="image/png" height="105" width="144"/>
+</item>
+<item>
+  <title>4Nations Face Off</title>
+  <dc:creator>chicken </dc:creator>
+  <link>https://blog.chickenstats.com/blog/posts/tutorials/four_nations/</link>
+  <description><![CDATA[ Analyze forward line performance at the 4Nations Face off ]]></description>
+  <category>tutorials</category>
+  <guid>https://blog.chickenstats.com/blog/posts/tutorials/four_nations/</guid>
+  <pubDate>Wed, 31 Dec 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.chickenstats.com/blog/posts/tutorials/four_nations/charts/5v5_4n_fo_forwards.png" medium="image" type="image/png" height="124" width="144"/>
+</item>
+<item>
+  <title>Goals saved above expected</title>
+  <dc:creator>chicken </dc:creator>
+  <link>https://blog.chickenstats.com/blog/posts/tutorials/gsax/</link>
+  <description><![CDATA[ Scrape play-by-play data and analyze goalies’ goals saved above expected ]]></description>
+  <category>tutorials</category>
+  <guid>https://blog.chickenstats.com/blog/posts/tutorials/gsax/</guid>
+  <pubDate>Wed, 31 Dec 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.chickenstats.com/blog/posts/tutorials/gsax/charts/saros_gsax_hours_since.png" medium="image" type="image/png" height="157" width="144"/>
+</item>
+<item>
+  <title>Lollipop chart</title>
+  <dc:creator>chicken </dc:creator>
+  <link>https://blog.chickenstats.com/blog/posts/tutorials/lollipop/</link>
+  <description><![CDATA[ Scrape play-by-play data and plot shot events as a lollipop chart, with the length of the stem indicating xG values ]]></description>
+  <category>tutorials</category>
+  <guid>https://blog.chickenstats.com/blog/posts/tutorials/lollipop/</guid>
+  <pubDate>Wed, 31 Dec 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.chickenstats.com/blog/posts/tutorials/lollipop/charts/2025020612.png" medium="image" type="image/png" height="96" width="144"/>
+</item>
+<item>
+  <title>Network charts</title>
+  <dc:creator>chicken </dc:creator>
+  <link>https://blog.chickenstats.com/blog/posts/tutorials/network/</link>
+  <description><![CDATA[ Scrape play-by-play data and analyze line combinations with network graphs ]]></description>
+  <category>tutorials</category>
+  <guid>https://blog.chickenstats.com/blog/posts/tutorials/network/</guid>
+  <pubDate>Wed, 31 Dec 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.chickenstats.com/blog/posts/tutorials/network/charts/nsh_network_graph.png" medium="image" type="image/png" height="105" width="144"/>
+</item>
+<item>
+  <title>How does Cam Ward stack up?</title>
+  <dc:creator>chicken </dc:creator>
+  <link>https://blog.chickenstats.com/blog/posts/tennessee_titans/titans_qbs/</link>
+  <description><![CDATA[ How does Cam Ward compare to this year’s rookies and historical Titans QBs ]]></description>
+  <category>tennessee titans</category>
+  <guid>https://blog.chickenstats.com/blog/posts/tennessee_titans/titans_qbs/</guid>
+  <pubDate>Fri, 26 Dec 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.chickenstats.com/blog/posts/tennessee_titans/titans_qbs/charts/epa_attempt_attempts_TEN.png" medium="image" type="image/png" height="102" width="144"/>
+</item>
+<item>
+  <title>2025 after 15 games</title>
+  <dc:creator>chicken </dc:creator>
+  <link>https://blog.chickenstats.com/blog/posts/nashville_predators/checking_in_2025/</link>
+  <description><![CDATA[ Recap of the first 15 games of the Predators’ 2025 season ]]></description>
+  <category>nashville predators</category>
+  <guid>https://blog.chickenstats.com/blog/posts/nashville_predators/checking_in_2025/</guid>
+  <pubDate>Sun, 02 Nov 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.chickenstats.com/blog/posts/nashville_predators/checking_in_2025/charts/5v5_xgf_xga_NSH.png" medium="image" type="image/png" height="105" width="144"/>
+</item>
+</channel>
+</rss>

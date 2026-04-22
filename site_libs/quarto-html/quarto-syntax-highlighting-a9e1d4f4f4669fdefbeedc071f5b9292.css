@@ -1,0 +1,251 @@
+/* quarto syntax highlight colors */
+:root {
+  --quarto-hl-al-color: #d52a2a;
+  --quarto-hl-an-color: #737373;
+  --quarto-hl-at-color: #6e59d9;
+  --quarto-hl-bn-color: #d52a2a;
+  --quarto-hl-bu-color: #6e59d9;
+  --quarto-hl-ch-color: #1c7d4d;
+  --quarto-hl-co-color: #737373;
+  --quarto-hl-cv-color: #737373;
+  --quarto-hl-cn-color: #6e59d9;
+  --quarto-hl-cf-color: #3f6ec6;
+  --quarto-hl-dt-color: #a846b9;
+  --quarto-hl-dv-color: #d52a2a;
+  --quarto-hl-do-color: #737373;
+  --quarto-hl-er-color: #d52a2a;
+  --quarto-hl-ex-color: #3f6ec6;
+  --quarto-hl-fl-color: #d52a2a;
+  --quarto-hl-fu-color: #a846b9;
+  --quarto-hl-im-color: #3f6ec6;
+  --quarto-hl-in-color: #737373;
+  --quarto-hl-kw-color: #3f6ec6;
+  --quarto-hl-op-color: #737373;
+  --quarto-hl-ot-color: #3f6ec6;
+  --quarto-hl-pp-color: #d52a2a;
+  --quarto-hl-re-color: #6e59d9;
+  --quarto-hl-sc-color: #db1457;
+  --quarto-hl-ss-color: #1c7d4d;
+  --quarto-hl-st-color: #1c7d4d;
+  --quarto-hl-va-color: #36464e;
+  --quarto-hl-vs-color: #1c7d4d;
+  --quarto-hl-wa-color: #737373;
+}
+
+/* other quarto variables */
+:root {
+  --quarto-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* syntax highlight based on Pandoc's rules */
+pre > code.sourceCode > span {
+  color: #36464e;
+  font-style: inherit;
+}
+
+code.sourceCode > span {
+  color: #36464e;
+  font-style: inherit;
+}
+
+div.sourceCode,
+div.sourceCode pre.sourceCode {
+  color: #36464e;
+  font-style: inherit;
+}
+
+/* Normal */
+code span {
+  color: #36464e;
+  font-style: inherit;
+}
+
+/* Alert */
+code span.al {
+  color: #d52a2a;
+  font-style: inherit;
+}
+
+/* Annotation */
+code span.an {
+  color: #737373;
+  font-style: italic;
+}
+
+/* Attribute */
+code span.at {
+  color: #6e59d9;
+  font-style: inherit;
+}
+
+/* BaseN */
+code span.bn {
+  color: #d52a2a;
+  font-style: inherit;
+}
+
+/* BuiltIn */
+code span.bu {
+  color: #6e59d9;
+  font-style: inherit;
+}
+
+/* ControlFlow */
+code span.cf {
+  color: #3f6ec6;
+  font-weight: bold;
+  font-style: inherit;
+}
+
+/* Char */
+code span.ch {
+  color: #1c7d4d;
+  font-style: inherit;
+}
+
+/* Constant */
+code span.cn {
+  color: #6e59d9;
+  font-style: inherit;
+}
+
+/* Comment */
+code span.co {
+  color: #737373;
+  font-style: italic;
+}
+
+/* CommentVar */
+code span.cv {
+  color: #737373;
+  font-style: italic;
+}
+
+/* Documentation */
+code span.do {
+  color: #737373;
+  font-style: italic;
+}
+
+/* DataType */
+code span.dt {
+  color: #a846b9;
+  font-style: inherit;
+}
+
+/* DecVal */
+code span.dv {
+  color: #d52a2a;
+  font-style: inherit;
+}
+
+/* Error */
+code span.er {
+  color: #d52a2a;
+  font-style: inherit;
+  text-decoration: underline;
+}
+
+/* Extension */
+code span.ex {
+  color: #3f6ec6;
+  font-weight: bold;
+  font-style: inherit;
+}
+
+/* Float */
+code span.fl {
+  color: #d52a2a;
+  font-style: inherit;
+}
+
+/* Function */
+code span.fu {
+  color: #a846b9;
+  font-style: inherit;
+}
+
+/* Import */
+code span.im {
+  color: #3f6ec6;
+  font-style: inherit;
+}
+
+/* Information */
+code span.in {
+  color: #737373;
+  font-style: italic;
+}
+
+/* Keyword */
+code span.kw {
+  color: #3f6ec6;
+  font-weight: bold;
+  font-style: inherit;
+}
+
+/* Operator */
+code span.op {
+  color: #737373;
+  font-style: inherit;
+}
+
+/* Other */
+code span.ot {
+  color: #3f6ec6;
+  font-style: inherit;
+}
+
+/* Preprocessor */
+code span.pp {
+  color: #d52a2a;
+  font-style: inherit;
+}
+
+/* RegionMarker */
+code span.re {
+  color: #6e59d9;
+  font-style: inherit;
+}
+
+/* SpecialChar */
+code span.sc {
+  color: #db1457;
+  font-style: inherit;
+}
+
+/* SpecialString */
+code span.ss {
+  color: #1c7d4d;
+  font-style: inherit;
+}
+
+/* String */
+code span.st {
+  color: #1c7d4d;
+  font-style: inherit;
+}
+
+/* Variable */
+code span.va {
+  color: #36464e;
+  font-style: inherit;
+}
+
+/* VerbatimString */
+code span.vs {
+  color: #1c7d4d;
+  font-style: inherit;
+}
+
+/* Warning */
+code span.wa {
+  color: #737373;
+  font-style: italic;
+}
+
+.prevent-inlining {
+  content: "</";
+}
+
+/*# sourceMappingURL=3a5f0c65750e519434328aca8e6302f4.css.map */
