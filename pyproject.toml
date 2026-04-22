@@ -83,5 +83,8 @@ convention = "google"
 docstring-code-format = true
 skip-magic-trailing-comma = true
 
+[tool.uv]
+package = false
+
 [tool.uv.sources]
 chickenstats = { git = "https://github.com/chickenandstats/chickenstats", branch = "v1.7.9.29" }

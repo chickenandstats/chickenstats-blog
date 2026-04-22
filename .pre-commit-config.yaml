@@ -16,3 +16,4 @@ repos:
   rev: 2.2.10
   hooks:
     - id: nbdev_clean
+      files: ^nbs/
