@@ -187,4 +187,4 @@ cython_debug/
 
 **.DS_Store
 
-nbs/blog/posts/tutorials/monte_carlo/results/
+nbs/blog/posts/tutorials/monte_carlo/results/predictions.parquet
