@@ -186,3 +186,5 @@ cython_debug/
 /_docs
 
 **.DS_Store
+
+nbs/blog/posts/tutorials/monte_carlo/results/
