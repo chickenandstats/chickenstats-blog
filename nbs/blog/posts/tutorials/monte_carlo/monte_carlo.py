@@ -641,7 +641,7 @@ def main():
     conds = pl.col("game_state") == "OFF"
     game_ids = schedule.filter(conds)["game_id"].unique().to_list()
 
-    data_directory = Path.cwd() / "data"
+    data_directory = Path(__file__).parent / "data"
     stats_file = data_directory / "team_stats.parquet"
 
     if not data_directory.exists():
@@ -677,7 +677,7 @@ def main():
 
     nhl_stats = prep_nhl_stats(team_stats)
 
-    results_directory = Path.cwd() / "results"
+    results_directory = Path(__file__).parent / "results"
     results_directory.mkdir(exist_ok=True)
     consolidated_file = results_directory / "predictions.parquet"
 
