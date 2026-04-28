@@ -3,7 +3,7 @@ from typing import Literal
 
 import polars as pl
 import numpy as np
-from scipy.stats import poisson
+from numpy.random import SeedSequence, default_rng
 from pathlib import Path
 import concurrent
 from concurrent.futures import ThreadPoolExecutor
@@ -368,38 +368,46 @@ def prep_todays_games(
     return todays_games
 
 
-def random_float() -> float:
-    """Generate a random floating number between 0 and 1."""
-    random_generator = np.random.default_rng()
-
-    # return random_generator.triangular(left=0.0, mode=0.5, right=1.0)
-    return random_generator.random()
+def _safe_lam(value) -> float:
+    """Return a valid Poisson lambda, replacing NaN/inf/negative values with 0."""
+    v = float(value) if value is not None else 0.0
+    return v if np.isfinite(v) and v >= 0 else 0.0
 
 
-def simulate_game(game: dict) -> dict:
-    """Docstring."""
-    prediction = {}
+def predict_game(
+    game: dict,
+    total_simulations: int = 10_000,
+    disable_progress_bar: bool = False,
+    save: bool = False,
+    overwrite: bool = True,
+    rng: np.random.Generator = None,
+) -> pl.DataFrame:
+    """Predict game based on n number of vectorized simulations simultaneously."""
+    if rng is None:
+        rng = np.random.default_rng()
 
-    home_5v5_toi = poisson.ppf(random_float(), game["predicted_home_5v5_toi"])
-    home_pp_toi = poisson.ppf(random_float(), game["predicted_home_powerplay_toi"])
-    home_sh_toi = poisson.ppf(random_float(), game["predicted_home_shorthanded_toi"])
+    home_5v5_toi = rng.poisson(lam=_safe_lam(game["predicted_home_5v5_toi"]), size=total_simulations)
+    home_pp_toi = rng.poisson(lam=_safe_lam(game["predicted_home_powerplay_toi"]), size=total_simulations)
+    home_sh_toi = rng.poisson(lam=_safe_lam(game["predicted_home_shorthanded_toi"]), size=total_simulations)
 
     total_toi = home_5v5_toi + home_pp_toi + home_sh_toi
 
-    if total_toi > 60:
-        home_5v5_toi = home_5v5_toi - ((home_5v5_toi / total_toi) * (total_toi - 60))
-        home_pp_toi = home_pp_toi - ((home_pp_toi / total_toi) * (total_toi - 60))
-        home_sh_toi = home_sh_toi - ((home_sh_toi / total_toi) * (total_toi - 60))
+    over_time_mask = total_toi > 60
+    if np.any(over_time_mask):
+        excess_time = total_toi - 60
+        home_5v5_toi = np.where(over_time_mask, home_5v5_toi - ((home_5v5_toi / total_toi) * excess_time), home_5v5_toi)
+        home_pp_toi = np.where(over_time_mask, home_pp_toi - ((home_pp_toi / total_toi) * excess_time), home_pp_toi)
+        home_sh_toi = np.where(over_time_mask, home_sh_toi - ((home_sh_toi / total_toi) * excess_time), home_sh_toi)
 
-    home_5v5_xgf_p60 = poisson.ppf(random_float(), game["predicted_home_5v5_xgf_p60"])
-    home_5v5_gf_p60 = poisson.ppf(random_float(), game["predicted_home_5v5_gf_p60"])
-    home_pp_xgf_p60 = poisson.ppf(random_float(), game["predicted_home_powerplay_xgf_p60"])
-    home_pp_gf_p60 = poisson.ppf(random_float(), game["predicted_home_powerplay_gf_p60"])
+    home_5v5_xgf_p60 = rng.poisson(lam=_safe_lam(game["predicted_home_5v5_xgf_p60"]), size=total_simulations)
+    home_5v5_gf_p60 = rng.poisson(lam=_safe_lam(game["predicted_home_5v5_gf_p60"]), size=total_simulations)
+    home_pp_xgf_p60 = rng.poisson(lam=_safe_lam(game["predicted_home_powerplay_xgf_p60"]), size=total_simulations)
+    home_pp_gf_p60 = rng.poisson(lam=_safe_lam(game["predicted_home_powerplay_gf_p60"]), size=total_simulations)
 
-    away_5v5_xgf_p60 = poisson.ppf(random_float(), game["predicted_away_5v5_xgf_p60"])
-    away_5v5_gf_p60 = poisson.ppf(random_float(), game["predicted_away_5v5_gf_p60"])
-    away_pp_xgf_p60 = poisson.ppf(random_float(), game["predicted_away_powerplay_xgf_p60"])
-    away_pp_gf_p60 = poisson.ppf(random_float(), game["predicted_away_powerplay_gf_p60"])
+    away_5v5_xgf_p60 = rng.poisson(lam=_safe_lam(game["predicted_away_5v5_xgf_p60"]), size=total_simulations)
+    away_5v5_gf_p60 = rng.poisson(lam=_safe_lam(game["predicted_away_5v5_gf_p60"]), size=total_simulations)
+    away_pp_xgf_p60 = rng.poisson(lam=_safe_lam(game["predicted_away_powerplay_xgf_p60"]), size=total_simulations)
+    away_pp_gf_p60 = rng.poisson(lam=_safe_lam(game["predicted_away_powerplay_gf_p60"]), size=total_simulations)
 
     home_5v5_goals = home_5v5_xgf_p60 * (home_5v5_toi / 60)
     home_pp_goals = home_pp_xgf_p60 * (home_pp_toi / 60)
@@ -409,26 +417,15 @@ def simulate_game(game: dict) -> dict:
     away_pp_goals = away_pp_xgf_p60 * (home_sh_toi / 60)
     away_total_goals = away_5v5_goals + away_pp_goals
 
-    if home_total_goals > away_total_goals:
-        home_win = 1
-        away_win = 0
-        draw = 0
+    home_win = np.where(home_total_goals > away_total_goals, 1, 0)
+    away_win = np.where(away_total_goals > home_total_goals, 1, 0)
+    draw = np.where(home_total_goals == away_total_goals, 1, 0)
 
-    elif away_total_goals > home_total_goals:
-        home_win = 0
-        away_win = 1
-        draw = 0
-
-    else:
-        home_win = 0
-        away_win = 0
-        draw = 1
-
-    prediction.update(
+    predictions = pl.DataFrame(
         {
-            "game_id": game["game_id"],
-            "home_team": game["home_team"],
-            "away_team": game["away_team"],
+            "game_id": np.full(total_simulations, game["game_id"]),
+            "home_team": np.full(total_simulations, game["home_team"]),
+            "away_team": np.full(total_simulations, game["away_team"]),
             "predicted_home_5v5_toi": home_5v5_toi,
             "predicted_home_powerplay_toi": home_pp_toi,
             "predicted_home_shorthanded_toi": home_sh_toi,
@@ -455,44 +452,6 @@ def simulate_game(game: dict) -> dict:
         }
     )
 
-    return prediction
-
-
-def predict_game(
-    game: dict,
-    total_simulations: int = 10_000,
-    disable_progress_bar: bool = False,
-    save: bool = False,
-    overwrite: bool = True,
-) -> pl.DataFrame:
-    """Predict game based on n number of simulations."""
-    predictions = []
-
-    with ChickenProgress(transient=True, disable=disable_progress_bar) as progress:
-        pbar_message = f"Simulating {game['game_id']}..."
-        simulation_task = progress.add_task(pbar_message, total=total_simulations)
-
-        for sim_number in range(0, total_simulations):
-            prediction = simulate_game(game=game)
-            predictions.append(prediction)
-
-            if sim_number == total_simulations - 1:
-                pbar_message = f"Finished simulating {game['game_id']}"
-
-            progress.update(simulation_task, description=pbar_message, advance=1, refresh=True)
-
-    predictions = pl.DataFrame(predictions)
-
-    if save:
-        predictions_path = Path("./results/predictions.csv")
-
-        if predictions_path.exists() and overwrite:
-            saved_predictions = pl.read_csv(predictions_path, infer_schema_length=2000)
-
-            predictions = pl.concat([saved_predictions, predictions], strict=False)
-
-        predictions.write_csv(predictions_path)
-
     return predictions
 
 
@@ -504,18 +463,35 @@ def predict_games(
     disable_progress_bar: bool = False,
     save: bool = False,
     overwrite: bool = False,
+    progress=None,
+    task_id=None,
+    seed: int | None = None,
 ) -> pl.DataFrame:
     """Simulate today's games."""
     predictions_list = []
 
+    sq = SeedSequence(seed)
+    games_list = todays_games.to_dicts()
+    generators = [default_rng(s) for s in sq.spawn(len(games_list))]
+
     with ThreadPoolExecutor(max_workers=n_workers) as executor:
         futures = [
-            executor.submit(predict_game_function, game, total_simulations, disable_progress_bar, save, overwrite)
-            for game in todays_games.to_dicts()
+            executor.submit(
+                predict_game_function, game, total_simulations, disable_progress_bar, save, overwrite, rng=gen
+            )
+            for game, gen in zip(games_list, generators, strict=True)
         ]
 
         for future in concurrent.futures.as_completed(futures):
-            predictions_list.append(future.result())
+            result = future.result()
+            predictions_list.append(result)
+            if progress is not None and task_id is not None:
+                game_id = result["game_id"][0]
+                away = result["away_team"][0]
+                home = result["home_team"][0]
+                progress.update(
+                    task_id, description=f"Finished simulating {game_id} ({away} @ {home})...", advance=1, refresh=True
+                )
 
     return pl.concat(predictions_list)
 
@@ -654,6 +630,9 @@ def main():
         default="6",
         type=int,
     )
+    parser.add_argument(
+        "-f", "--force", help="Delete existing predictions and predicted winners before running", action="store_true"
+    )
     args = parser.parse_args()
 
     season = Season(2025, backend="polars")
@@ -663,13 +642,13 @@ def main():
     game_ids = schedule.filter(conds)["game_id"].unique().to_list()
 
     data_directory = Path.cwd() / "data"
-    stats_file = data_directory / "team_stats.csv"
+    stats_file = data_directory / "team_stats.parquet"
 
     if not data_directory.exists():
         data_directory.mkdir()
 
     if stats_file.exists():
-        team_stats = pl.read_csv(source=stats_file, infer_schema_length=2000)
+        team_stats = pl.read_parquet(stats_file)
 
         saved_game_ids = team_stats["game_id"].to_list()
         game_ids = [x for x in game_ids if x not in saved_game_ids]
@@ -680,16 +659,13 @@ def main():
         scraped_team_stats = scraper.team_stats
 
         if stats_file.exists():
-            team_stats = pl.read_csv(source=stats_file, infer_schema_length=2000)
-
-            team_stats = pl.concat(
-                [team_stats.with_columns(pl.col("bsf_adj_percent").cast(pl.Float64)), scraped_team_stats], strict=False
-            )  # Quirk, don't ask
+            team_stats = pl.read_parquet(stats_file)
+            team_stats = pl.concat([team_stats, scraped_team_stats], strict=False)
 
         else:
             team_stats = scraped_team_stats.clone()
 
-        team_stats.write_csv(stats_file)
+        team_stats.write_parquet(stats_file)
 
     home_map = dict(zip(schedule["game_id"], schedule["home_team"], strict=False))
 
@@ -701,21 +677,13 @@ def main():
 
     nhl_stats = prep_nhl_stats(team_stats)
 
+    results_directory = Path.cwd() / "results"
+    results_directory.mkdir(exist_ok=True)
+    consolidated_file = results_directory / "predictions.parquet"
+
     if args.all_dates:
-        results_directory = Path.cwd() / "results"
-        predictions_file = results_directory / "predictions.csv"
-
-        if predictions_file.exists():
-            saved_predictions = pl.read_csv(predictions_file)
-            conds = (
-                pl.col("game_state") == "OFF",
-                ~pl.col("game_id").is_in(saved_predictions["game_id"].unique().to_list()),
-            )
-            game_index = 0
-
-        else:
-            conds = pl.col("game_state") == "OFF"
-            game_index = 75
+        conds = pl.col("game_state") == "OFF"
+        game_index = 75
 
         final_games = schedule.filter(conds).sort("game_id", descending=False)
         final_game_ids = final_games["game_id"].unique().to_list()[game_index:]
@@ -732,23 +700,7 @@ def main():
             year=int(args.latest_date[:4]), month=int(args.latest_date[5:7]), day=int(args.latest_date[8:10])
         )
 
-        results_directory = Path.cwd() / "results"
-        predictions_file = results_directory / "predictions.csv"
-
-        if predictions_file.exists():
-            saved_predictions = pl.read_csv(predictions_file)
-            conds = (
-                pl.col("game_date").str.to_datetime(format="%Y-%m-%d") <= latest_date,
-                ~pl.col("game_id").is_in(saved_predictions["game_id"].unique().to_list()),
-                pl.col("game_id") > saved_predictions["game_id"].max(),
-                pl.col("game_state") == "OFF",
-            )
-
-        else:
-            conds = (
-                pl.col("game_date").str.to_datetime(format="%Y-%m-%d") <= latest_date,
-                pl.col("game_state") == "OFF",
-            )
+        conds = (pl.col("game_date").str.to_datetime(format="%Y-%m-%d") <= latest_date, pl.col("game_state") == "OFF")
 
         final_games = schedule.filter(conds).sort("game_id", descending=False)
         final_game_ids = final_games["game_id"].unique().to_list()
@@ -760,50 +712,56 @@ def main():
             .to_list()
         )
 
-    predictions_list = []
+    if args.force:
+        consolidated_file.unlink(missing_ok=True)
+
+    if consolidated_file.exists():
+        saved_game_ids = set(
+            pl.scan_parquet(consolidated_file).select("game_id").unique().collect()["game_id"].to_list()
+        )
+        pending_dates = [
+            d for d in dates if not schedule.filter(pl.col("game_date") == d)["game_id"].is_in(saved_game_ids).all()
+        ]
+    else:
+        pending_dates = dates
+
+    total_games = sum(schedule.filter(pl.col("game_date") == date)["game_id"].n_unique() for date in pending_dates)
+
+    new_predictions_list = []
 
     with ChickenProgress() as progress:
-        pbar_message = "Simulating games..."
-        progress_task = progress.add_task(pbar_message, total=len(dates))
+        progress_task = progress.add_task("Simulating games...", total=total_games)
 
-        for idx, date in enumerate(dates):
+        for date in pending_dates:
             todays_games = prep_todays_games(
                 schedule=schedule, team_stats=team_stats, nhl_stats=nhl_stats, latest_date=date
             )
 
-            today_game_ids = todays_games["game_id"].to_list()
-            pbar_message = f"Simulating {date}: ({len(today_game_ids)} games)..."
-            progress.update(progress_task, description=pbar_message, advance=False, refresh=True)
-
             predictions = predict_games(
-                predict_game, todays_games, total_simulations=args.simulations, n_workers=args.number_of_cores
+                predict_game,
+                todays_games,
+                total_simulations=args.simulations,
+                n_workers=args.number_of_cores,
+                progress=progress,
+                task_id=progress_task,
             )
 
-            predictions_list.append(predictions)
+            new_predictions_list.append(predictions)
 
-            if idx == len(dates) - 1:
-                pbar_message = "Finished simulating games"
+        progress.update(progress_task, description="Finished simulating all games", refresh=True)
 
-            progress.update(progress_task, description=pbar_message, advance=1, refresh=True)
+    if new_predictions_list:
+        new_predictions = pl.concat(new_predictions_list)
+        if consolidated_file.exists():
+            new_predictions = pl.concat([pl.read_parquet(consolidated_file), new_predictions])
+        new_predictions.write_parquet(consolidated_file)
 
-    predictions = pl.concat(predictions_list)
-    predicted_winners = process_winners(predictions)
+    all_predictions = pl.read_parquet(consolidated_file)
+    predicted_winners = process_winners(all_predictions)
     assessed_predictions = assess_predictions(predicted_winners, schedule)
 
-    results_directory = Path.cwd() / "results"
-    predictions_file = results_directory / "predictions.csv"
-
-    if predictions_file.exists():
-        predictions = pl.concat([pl.read_csv(predictions_file), predictions])
-
-    predictions.write_csv("./results/predictions.csv")
-
-    assessed_predictions_file = results_directory / "assessed_predictions.csv"
-
-    if assessed_predictions_file.exists():
-        assessed_predictions = pl.concat([pl.read_csv(assessed_predictions_file), assessed_predictions])
-
-    assessed_predictions.write_csv("./results/predicted_winners.csv")
+    predicted_winners_file = results_directory / "predicted_winners.parquet"
+    assessed_predictions.write_parquet(predicted_winners_file)
 
 
 if __name__ == "__main__":
