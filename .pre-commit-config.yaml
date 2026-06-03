@@ -4,7 +4,9 @@ repos:
   hooks:
     - id: check-merge-conflict
     - id: end-of-file-fixer
+      exclude: \.html$
     - id: trailing-whitespace
+      exclude: \.html$
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.15.11
@@ -12,8 +14,13 @@ repos:
     - id: ruff
     - id: ruff-format
 
-- repo: https://github.com/fastai/nbdev
-  rev: 2.2.10
+- repo: local
   hooks:
     - id: nbdev_clean
+      name: nbdev_clean
+      entry: nbdev_clean
+      language: python
+      additional_dependencies: [nbdev>=2.4.6]
       files: ^nbs/
+      types_or: [jupyter]
+      pass_filenames: false
