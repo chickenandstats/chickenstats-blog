@@ -12,28 +12,7 @@ requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 keywords = ['nbdev', 'jupyter', 'notebook', 'python']
 classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
-dependencies = [
-    "bokeh>=3.8.0",
-    "census>=0.8.24",
-    "chickenstats>=1.7.9.23",
-    "hockey-rink>=1.1.4",
-    "ipywidgets>=8.1.8",
-    "jupyter>=1.1.1",
-    "jupyterlab-quarto>=0.3.5",
-    "monsterui>=1.0.32",
-    "nbdev>=2.4.6",
-    "nflreadpy>=0.1.5",
-    "osmnx>=2.0.7",
-    "plotly>=6.3.1",
-    "polars-st>=0.4.3",
-    "pre-commit>=4.3.0",
-    "python-dotenv>=1.2.1",
-    "python-fasthtml>=0.12.33",
-    "pytz>=2025.2",
-    "quarto>=0.1.0",
-    "seaborn>=0.13.2",
-    "us>=3.2.0",
-]
+dependencies = []
 
 [project.urls]
 Repository = "https://github.com/chickenandstats/chickenstats-blog"
@@ -85,11 +64,37 @@ skip-magic-trailing-comma = true
 
 [tool.uv]
 package = false
-
-[tool.uv.sources]
-chickenstats = { git = "https://github.com/chickenandstats/chickenstats", branch = "v1.7.9.29" }
+default-groups = ["core", "viz", "sports", "data", "dev"]
 
 [dependency-groups]
+core = [
+    "ipywidgets>=8.1.8",
+    "jupyter>=1.1.1",
+    "jupyterlab-quarto>=0.3.5",
+    "nbdev>=2.4.6",
+    "python-dotenv>=1.2.1",
+    "pytz>=2025.2",
+    "quarto>=0.1.0",
+]
+viz = [
+    "bokeh>=3.8.0",
+    "hockey-rink>=1.1.4",
+    "plotly>=6.3.1",
+    "seaborn>=0.13.2",
+]
+sports = [
+    "chickenstats>=1.7.9.23",
+    "nflreadpy>=0.1.5",
+]
+data = [
+    "boto3>=1.43.2",
+    "census>=0.8.24",
+    "deltalake>=1.5.1",
+    "osmnx>=2.0.7",
+    "polars-st>=0.4.3",
+    "us>=3.2.0",
+]
 dev = [
+    "pre-commit>=4.3.0",
     "ruff>=0.15.11",
 ]
